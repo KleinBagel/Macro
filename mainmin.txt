@@ -1,0 +1,168 @@
+
+// ======================= MODIFICATION CONFIGURATION =================================//
+
+//largebackpack 56 / greaterbackpack 65
+#backpack = 65
+//Direction de la Farm
+set(@&yaw,east);
+//Vendre PNJ
+set(gotosell,false);
+
+//======================== ATTENTION PAS DE MODIFICATION ==============================//
+
+#mined = 0;
+#craftitems = 0;
+#slots
+set(@#pitch,-90);
+set(gotohub,false);
+set(run)
+
+if(mininginv);
+    set(mininginv,false);
+    log("Stop Script Main");    
+    set(@mining,false);
+    exec(hypmining.txt)
+    stop();
+
+else;
+    set(mininginv);    
+    log("Go Script Mine");
+    log(&bAutominer ==> &2 Script is starting!);
+    
+    //starts runing
+    do;
+        #xpos = XPOS
+        #ypos = YPOS
+        #zpos = ZPOS
+        //log("x:%#xpos% y:%#ypos% z:%#zpos%")
+        if((%#ypos% >= 86)&&(%#ypos% <= 88))
+            if(run)
+                set(@mining)
+                exec(hypmining.txt)
+                set(run,false)
+            endif
+            //detects when inventory is full
+            ifinvisfull();   
+                set(@mining,false)
+                exec(hypmining.txt)
+
+                log(&bAutominer ==> &7 Crafting enchanted cobblestone);
+
+                for(#var,34,16,9)
+                    echo("/craft");
+                    wait(10t);
+                    getslotitemext(%#var%,&item,#stack,&dam,&name);
+                    strip(&ecobble,%&name%);
+                    if(%&ecobble% == "Enchanted Cobblestone");
+                        for(#invslot,1,14);
+                            slotclick(%#var%);
+                            wait(1t) ;  
+                        next;                   
+                    endif;
+                    press(escape)
+                    wait(10t)
+                next;
+                
+                slot(2)
+                key(use)
+                wait(10t)
+                slotclick(%#backpack%,l,true)
+                wait(20t)
+                getslotitemext(28,&items,#itemcounts,&dams,&names);
+                strip(&ecobbles,%&names%);
+                press(escape)
+                wait(5t)
+                if(%&ecobbles% == "Enchanted Cobblestone");
+                    if(%#itemcounts% == 64);
+                        if(gotosell)
+                            set(gotohub,true)
+                        else
+                            echo("/enderchest")
+                            wait(10t)
+                            slotclick(83,l,true)
+                            wait(5t)
+                        endif;
+                    endif;
+                endif;
+                press(escape)
+                wait(5t)
+                set(@mining)
+                exec(hypmining.txt)
+                wait(5t)
+            endif;
+            if(gotohub);
+                wait(5t)
+                set(@mining,false)
+                exec(hypmining.txt)
+
+                wait(15t)
+                slot(2)
+                key(use)
+                wait(5t)
+                key(use)
+                wait(20t)
+                for(#sloth,0,35)
+                getslotitem(%#sloth%);
+                    slotclick(%#sloth%, left, true);
+                    wait(20t)
+                next;
+                wait(5t);
+                press(escape);
+                wait(5t);
+                slot(1);
+                wait(2t);
+                slot(1);
+                wait(20t);
+                echo(/hub);
+                wait(30t);
+                slot(2)
+                wait(20t)
+                press(t);
+                wait(10t);
+                type(" goto 32 71 -79 ");
+                wait(20t);
+                press(return);
+                wait(150t);
+                key(attack);
+                wait(15t);
+                slotclick(79)
+                wait(15t);
+                slotclick(16)
+                wait(15t);
+                slotclick(12)
+                wait(15t);
+                slotclick(13)
+                wait(15t);
+                echo(/warp home);
+                wait(30t);
+                press(t);
+                wait(10t);
+                type(" goto 12 87 -3.5 ");
+                wait(20t);
+                press(return);
+                wait(150t);
+                        
+                set(@mining)
+                exec(hypmining.txt)        
+                    
+                set(gotohub,false)
+            endif;
+        else
+            log("Warning AFK")
+            set(@mining,false)
+            exec(hypmining.txt)
+            wait(15t)
+            echo("/lobby")
+            wait(5000ms)
+            echo("/play sb")
+            wait(5000ms)
+            echo("/is")
+            wait(10t)
+            set(run)
+        endif;
+    loop;
+endif;
+
+
+
+

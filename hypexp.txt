@@ -1,0 +1,18 @@
+looks(%@&yaw%,,0.1);
+looks(,%@#pitch%,0.1);
+//log("%@&yaw%,%@#pitch%")
+do;
+    if(@byexp);
+        looks(,-1,0.01);        
+        looks(,+1,0.01);
+        looks(+1,,0.01);
+        looks(-1,,0.01);
+          
+    else;
+        looks(%@&yaw%,,0.1);
+        looks(,0,0.1);
+        stop();
+    endif;
+while(@byexp);
+        
+

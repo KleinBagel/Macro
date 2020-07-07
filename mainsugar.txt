@@ -1,0 +1,225 @@
+// 1t = 0.05s
+// 20t = 1s
+
+#mined = 0;
+#craftitems = 0;
+#slots
+#vpos = 1;
+#pitch = -50;
+
+#posx = XPOS;
+inc(#posx,2)
+set(@&yaw,"north");
+set(@#pitch,%#pitch%);
+set(invfull,false);
+set(sugarcane,false);
+set(gotohub,false)
+
+if(mininginv);
+    log("Stop Script Farming");    
+    set(mininginv,false);
+    set(@mining,false);
+    exec(hypmining.txt)
+    stop();
+
+else;
+    set(mininginv);    
+    log("Go Script Farming");
+    log(&bFarmer ==> &2 Script is starting!);
+    set(@mining)
+    exec(hypmining.txt)
+    //starts runing
+    do;
+        
+        #zpos = ZPOS 
+        #xpos = XPOS
+        #ypos = YPOS
+
+        //log("x:%#xpos% y:%#ypos% z:%#zpos% posx:%#posx% vpos:%#vpos% %gotohub%")
+        if(((%#xpos% == 78)&&(%#zpos% < -75))
+             set(gotohub,true)
+             set(#posx,-37);
+        endif;  
+        if(((%#xpos% == -39)&&(%#zpos% == 79))||((%#xpos% == -3)&&(%#ypos% == 70)&&((%#zpos% < -85)||(%#zpos% > -85))))
+                
+            set(#posx,-37);
+            set(#vpos,1);
+            set(@&yaw,"north");
+            
+            set(@mining,false)
+            exec(hypmining.txt)
+            wait(2500ms)
+            if((gotohub)||((%#xpos% == -3)&&(%#ypos% == 70)&&((%#zpos% < -85)||(%#zpos% > -85)))
+                wait(20t);
+                echo(/hub);
+                wait(30t);
+                echo(/warp home)
+                wait(30t);
+                wait(20t)
+                press(t);
+                wait(10t);
+                type( goto 11 98 2);
+                wait(20t);
+                press(return);
+                wait(50t);
+                keydown(right)
+                keydown(forward)
+                wait(5t)
+                keyup(right)
+                keyup(forward)
+                wait(5t)
+            endif;
+            keydown(right)
+            wait(2t)
+            keyup(right)
+            wait(5t)
+            set(@mining)
+            set(@#pitch,%#pitch%);
+            exec(hypmining.txt)
+            wait(2000ms)
+            set(gotohub,false)
+        endif;
+        if((%#zpos% == -79)&&(%#vpos% == 1))
+            
+            log("1")
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+            set(@&yaw,"south")
+            
+            set(@mining,false)
+            exec(hypmining.txt) 
+            set(#vpos,2)
+            wait(15t)
+            keydown(forward)
+            wait(1t)
+            keyup(forward)
+            wait(5t)
+            keydown(left)
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+           
+        endif;
+        if((%#xpos% == %#posx%)&&(%#vpos% == 2))
+            
+            keyup(left)
+            log("2")
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+            wait(5t)
+            set(@mining)
+            set(@#pitch,%#pitch%);
+            exec(hypmining.txt)
+            wait(17t)
+            keydown(right)
+            wait(5t)
+            keyup(right)
+            keydown(left)
+            wait(1t)
+            keyup(left)
+            set(#vpos,3)
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+            
+        endif;
+        
+        if((%#zpos% == 79)&&(%#vpos% == 3))
+            
+            log("3")
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+            set(@&yaw,"north")
+            set(@mining,false)
+            exec(hypmining.txt)
+            set(#vpos,4)
+            wait(5t)
+            keydown(right)
+            inc(#posx,1)
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+            
+        endif;
+        if((%#xpos% == %#posx%)&&(%#vpos% == 4))
+            
+            keyup(right)
+            log("4")
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+            set(@mining)
+            set(@#pitch,%#pitch%);
+            exec(hypmining.txt)
+            wait(2t)
+            keydown(left)
+            wait(1t)
+            keyup(left)
+            set(#vpos,1)
+            inc(#posx,2)
+            log("%#xpos%  %#zpos% %#vpos% %#posx%")
+
+        endif;
+        
+
+        //detects when inventory is full
+        if((%#vpos% == 1)||(%#vpos% == 3))
+        wait(2t)
+        ifinvisfull(); 
+            
+            
+            set(@mining,false)
+            exec(hypmining.txt)
+            log("Go craft")
+            //log(&bAutominer ==> &7 Crafting enchanted cobblestone);
+            echo("/craft");
+            wait(5t)
+            for(#var,16,34,9)
+                getslotitemext(%#var%,&item,#stack,&dam,&name);
+                strip(&esugar,%&name%);
+                //log("%#var%, %&esugar%, %&name%")
+                if(%&esugar% == "Enchanted Sugar Cane");
+                    set(sugarcane,true)   
+                endif;
+                if(%&esugar% == "Enchanted Sugar");
+                    for(#invslot,1,14);
+                        slotclick(%#var%);
+                        wait(1t) ;
+                        set(manuel,false)  
+                    next;
+                endif;
+            next;
+            press(escape);
+            wait(10t)
+            if(sugarcane);
+                echo("/craft");
+                wait(5t)
+                for(#var,16,34,9)
+                    getslotitemext(%#var%,&item,#stack,&dam,&name);
+                    strip(&esugar,%&name%);
+                    //log("%#var%, %&esugar%, %&name%")
+                    if(%&esugar% == "Enchanted Sugar Cane");
+                        for(#invslot,1,2);
+                            slotclick(%#var%);
+                            wait(1t) ;  
+                        next;
+                    
+                    endif;
+                next
+                press(escape)
+                wait(5t)
+                //slot(2)
+                echo("/enderchest")
+                key(use)
+                wait(10t)
+                //slotclick(65,l,true)
+                slotclick(83,l,true)    
+                wait(20t)
+                press(escape)
+                wait(5t)
+                set(sugarcane,false)
+            endif;
+            
+            set(@mining);
+            exec(hypmining.txt);
+            log("Stop craft")
+            wait(5t);
+            set(invfull,false);
+        endif;
+        endif;
+         
+    loop;
+endif;
+
+
+
+

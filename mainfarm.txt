@@ -1,0 +1,215 @@
+
+// ======================= MODIFICATION CONFIGURATION =================================//
+
+//choisir Potato Carrot Melon Pumpkin Sugar
+&farming = "Sugar"
+//large = 56 / greater = 65
+#backpack = 65 
+//true : Enchanted Carrot / False : Great Carrot
+set(carrotinventory,false)
+
+//======================== ATTENTION PAS DE MODIFICATION ==============================//
+
+#candy = 0
+#max = 56
+#farmcpt = 1000
+&epotato = "Enchanted Potato"
+&ebakedpotato = "Enchanted Baked Potato"
+&simplecarrot = "Simple Carrot Candy"
+&ecarrot = "Enchanted Carrot"
+&greatcarrot = "Great Carrot Candy"
+&emelon = "Enchanted Melon"
+&emelonblock = "Enchanted Melon Block"
+&epumpkin = "Enchanted Pumpkin"
+&esugar = "Enchanted Sugar"
+&esugarcane = "Enchanted Sugar Cane"
+
+set(notenchantedblock,false)
+set(target,false)
+
+if(farmingflag);
+    set(farmingflag,false);
+    log("Stop Script Main Farming");    
+    press(t)
+    wait(3t)
+    type(" cancel ")
+    wait(3t)
+    press(return)
+    wait(3t)
+    stop();
+else
+    log("Go Script Main Farming"); 
+    set(farmingflag);
+    log(&bFarming ==> &7 Script is starting!);
+    
+    if(%&farming% == "Potato")
+       &position = goto 50 9 8
+    elseif(%&farming% == "Carrot")
+       #max = 59
+       &position = goto -50 9 8
+    endif;
+     
+    do;
+        #xpos = XPOS
+        #ypos = YPOS
+        #zpos = ZPOS
+        //log(x:%#xpos% y:%#ypos% z:%#zpos% %#farmcpt% %&farming%) 
+        if((%#ypos% <= 10)||(%#ypos% >= 240))
+            
+            if(((%#xpos% >= 75)&&(%#zpos% >= -70))&&((%&farming% == "Melon")||(%&farming% == "Pumpkin")||(%&farming% == "Sugar")))
+                echo(/hub)
+            endif    
+            if(#farmcpt == 1000)
+                
+                wait(20t)
+                press(t)
+                wait(5t)
+                type(" cancel ")
+                wait(5t)
+                press(return)
+                wait(5t)
+                if((%&farming% == "Potato")||(%&farming% == "Carrot"))
+                    press(t)
+                    wait(5t)
+                    type(" %&position% ")
+                    wait(5t)
+                    press(return)
+                    wait(50t)
+                endif;
+                press(t)
+                wait(5t)
+                type(" farm ")
+                wait(5t)
+                press(return)
+                wait(5t)
+                set(#farmcpt,0)
+            endif;
+    
+            inc(#farmcpt,1)
+            wait(100ms)
+            //detects when inventory is full
+            ifinvisfull(); 
+
+                log("Go craft")
+                wait(10t)
+                press(t)
+                wait(5t)
+                type(" cancel ")
+                wait(5t)
+                press(return)
+                
+                for(#var,34,16,9)
+                    echo("/craft");
+                    wait(10t)
+                    getslotitemext(%#var%,&item,#stack,&dam,&name);
+                    strip(&efood,%&name%)
+               
+                    if((%&efood% == %&simplecarrot%)&&(%#candy% == 0))
+                        #candy = 1
+                        slotclick(%#var%);
+                        wait(5t) ; 
+                        slotclick(62);
+                        wait(10t)
+                    endif;
+                    
+                    if((%&efood% == %&ebakedpotato%)||(%&efood% == %&greatcarrot%)||(%&efood% == %&emelonblock%)||(%&efood% == %&esugarcane%));
+                        set(enchantedblock,true)
+                        #candy = 0
+                    endif;
+                    
+                    if((%&efood% == %&epotato%)||(%&efood% == %&ecarrot%)||(%&efood% == %&emelon%)||(%&efood% == %&epumpkin%)||(%&efood% == %&esugar%));
+                        set(target,true)
+                        for(#invslot,1,14);
+                            slotclick(%#var%);
+                            wait(1t) 
+                        next;
+                        if((%&efood% == %&epumpkin%)||((%&efood% == %&ecarrot%)&&(carrotinventory)))
+                            set(notenchantedblock,true)
+                        endif;
+                    endif;
+                    
+                    if((%notenchantedblock% == False)&&(target))
+                        set(target,false)
+                        for(#invslot,54,%#max%);
+                            slotclick(%#invslot%);
+                            wait(10t);  
+                        next;
+                    endif
+                    press(escape);
+                    wait(5t) 
+                next;
+                
+                if(notenchantedblock)
+                    slot(2)
+                    key(use)
+                    wait(10t)
+                    slotclick(%#backpack%,l,true)  
+                    wait(20t)
+                    getslotitemext(34,&items,#itemcounts,&dams,&names);
+                    strip(&efood,%&names%)
+                    press(escape)
+                    wait(5t)
+                    if(%&efood% == %&ecarrot%)
+                        if(%#itemcounts% == 64);
+                            echo("/enderchest")
+                            wait(10t)
+                            slotclick(83,l,true)
+                            wait(5t)
+                            press(escape)
+                            wait(5t)
+                        endif;
+                    endif;
+                    set(notenchantedblock,false)
+                endif;
+                
+                if(enchantedblock);
+                    echo("/craft");
+                    wait(10t)
+                    for(#var,16,34,9)
+                        getslotitemext(%#var%,&item,#stack,&dam,&name);
+                        strip(&efood,%&name%);
+                        if((%&efood% == %&ebakedpotato%)||(%&efood% == %&greatcarrot%)||(%&efood% == %&emelonblock%)||(%&efood% == %&esugarcane%));
+                            for(#invslot,1,2);
+                                slotclick(%#var%);
+                                wait(1t) ;  
+                            next;
+                        endif;
+                    next
+                    press(escape)
+                    wait(5t)
+                    slot(2)
+                    key(use)
+                    wait(10t)
+                    slotclick(%#backpack%,l,true)  
+                    wait(20t)
+                    press(escape)
+                    wait(5t)
+                    set(enchantedblock,false)
+                endif;
+                
+                wait(5t)
+                log("Stop craft")
+                wait(5t);
+                set(invfull,false);
+                
+                press(t)
+                wait(5t)
+                type(" farm ")
+                wait(5t)
+                press(return)
+                wait(10t
+               
+            endif;
+        else
+            log("Warning AFK")
+            echo("/lobby")
+            wait(5000ms)
+            echo("/play sb")
+            wait(5000ms)
+            echo("/is")
+            wait(2500ms)
+            #farmcpt = 1000
+            wait(10t)
+        endif;
+    loop;
+endif;

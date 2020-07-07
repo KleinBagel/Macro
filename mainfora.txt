@@ -1,0 +1,270 @@
+
+// ======================= MODIFICATION CONFIGURATION =================================//
+
+//choisir Oak,Spruce,Birch,Dark Oak,Acacia,Jungle)
+&foraging = "Spruce"
+//large = 56 / greater = 65
+#backpack = 65 
+
+//======================== ATTENTION PAS DE MODIFICATION ==============================//
+
+#forag = 50;
+set(lobby,false)
+set(warp,false)
+set(verifnafk)
+
+if(%&foraging% == "Oak")
+    #max = 8
+    &text[1] = "sel 1 -147 77 -43"
+    &text[2] = "sel 2 -204 74 -75"
+    &text[3] = "sel 1 -214 74 -7"
+    &text[4] = "sel 2 -162 77 -41"
+    &text[5] = "sel 1 -161 73 -23"
+    &text[6] = "sel 2 -129 71 7"
+    &text[7] = "sel 1 -132 73 -49"
+    &text[8] = "sel 2 -102 76 -27"
+elseif(%&foraging% == "Spruce")
+
+    #max = 4
+    &text[1] = "sel 1 -347 93 -5"
+    &text[2] = "sel 2 -400 90 65"
+    &text[3] = "sel 1 -347 93 -5"
+    &text[4] = "sel 2 -323 89 45"   
+elseif(%&foraging% == "Birch")
+    #max = 2
+    &text[1] = "sel 1 -278 85 -34"
+    &text[2] = "sel 2 -317 83 34"    
+elseif(%&foraging% == "Dark Oak")
+    #max = 2
+    &text[1] = "sel 1 -372 106 -33"
+    &text[2] = "sel 2 -320 103 -120" 
+elseif(%&foraging% == "Acacia")
+    #max = 2
+    &text[1] = "sel 1 -386 110 -45"
+    &text[2] = "sel 2 -460 114 31"
+elseif(%&foraging% == "Jungle")
+    #max = 4
+    &text[1] = "sel 1 -442 127 -82"
+    &text[2] = "sel 2 -398 129 -120"
+    &text[3] = "sel 1 -450 119 -43"
+    &text[4] = "sel 2 -368 122 -112"
+endif
+
+if(foraginginv);
+    set(foraginginv,false); 
+    log("Stop Script Mainf");
+    press(t)
+    wait(3t)
+    type(" cancel ")
+    wait(3t)
+    press(return)
+    wait(3t)
+    press(t)
+    wait(3t)
+    type(" sel c ")
+    wait(3t)
+    press(return)
+    stop();
+else;
+    log("Go Script Mainf"); 
+    set(foraginginv);
+    log(&bForaging ==> &7 Script is starting!);
+    wait(10t)
+    echo("/is")
+    wait(5000ms)
+    echo("/hub")
+    wait(5000ms)
+    for(#i,1,%#max%)
+        
+        press(t)
+        wait(5t)
+        type( %&text[%#i%]%)
+        wait(5t)
+        press(return)
+        wait(5t)
+    next;
+
+    do;
+        
+        #xpos = XPOS
+        #ypos = YPOS
+        #zpos = ZPOS
+        
+        //log(%ONLINEPLAYERS% %lobby%)
+        //log(%&foraging% %warp%)
+        //log(x:%#xpos% y:%#ypos% z:%#zpos%) 
+        
+        if((%ONLINEPLAYERS% > 4)&&(%lobby% == False)&&(%&foraging% == "Oak"))
+            wait(30t)
+            log("Oak")
+            set(lobby)
+            echo("/hub")
+            wait(15t)
+            press(t)
+            wait(5t)
+            type(" goto -9 70 -80 ")
+            wait(5t)
+            press(return)
+            wait(35t)
+            key(attack);
+            wait(15t);
+            slotclick(50)
+            wait(15t);
+            wait(4000ms)
+        elseif((%warp% == False)&&((%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Dark Oak")||(%&foraging% == "Acacia")||(%&foraging% == "Jungle")))
+            wait(30t)
+            log("Birch")
+            set(warp)
+            echo("/warp park")
+            wait(5000ms)
+            if((%&foraging% == "Spruce")||(%&foraging% == "Dark Oak")||(%&foraging% == "Acacia")||(%&foraging% == "Jungle"))
+                log("Spruce")
+                press(t)
+                wait(5t)
+                type(" goto -328 82 -16 ")
+                wait(5t)
+                press(return)
+                wait(10000ms)
+                if((%&foraging% == "Dark Oak")||(%&foraging% == "Acacia")||(%&foraging% == "Jungle"))
+                    log("Dark Oak")
+                    press(t)
+                    wait(5t)
+                    type(" goto -354 89 -13 ")
+                    wait(5t)
+                    press(return)
+                    wait(5000ms)
+                    if((%&foraging% == "Acacia")||(%&foraging% == "Jungle"))
+                        log("Acacia")
+                        press(t)
+                        wait(5t)
+                        type(" goto -372 103 -20 ")
+                        wait(5t)
+                        press(return)
+                        wait(5000ms)
+                        if(%&foraging% == "Jungle")
+                            log("Jungle")
+                            press(t)
+                            wait(5t)
+                            type(" goto -407 110 -29 ")
+                            wait(5t)
+                            press(return)
+                            wait(5t)
+                        endif
+                    endif
+                endif
+            endif
+        else
+            if(verifnafk)
+                if(#forag == 50)
+                    wait(20t)
+                    press(t)
+                    wait(5t)
+                    type(" cancel")
+                    wait(5t)
+                    press(return)
+                    wait(5t)
+                    press(t)
+                    wait(5t)
+                    if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
+                        type(" sel r minecraft:log air ")
+                    elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
+                        type(" sel r minecraft:log2 air ")
+                    endif
+                    wait(5t)
+                    press(return)
+                    wait(5t)
+                    set(#forag,0)
+                endif;
+                
+                if(#forag == 25)
+                    set(verifnafk,false)
+                    if((%&foraging% == "Oak")&&(%#ypos% <= 71 ))
+                        set(lobby,false)
+                    elseif((%&foraging% == "Birch")&&(%#ypos% <= 80 ))
+                        set(warp,false)
+                    elseif((%&foraging% == "Spruce")&&(%#ypos% <= 88 ))
+                        set(warp,false)
+                    elseif((%&foraging% == "Dark Oak")&&(%#ypos% <= 100 ))
+                        set(warp,false)
+                    elseif((%&foraging% == "Acacia")&&(%#ypos% <= 108 ))
+                        set(warp,false)
+                    elseif((%&foraging% == "Jungle")&&(%#ypos% <= 118 ))
+                        set(warp,false)
+                    else
+                        set(verifnafk)
+                    endif
+                endif
+                
+                inc(#forag,1)
+                wait(500ms)
+                
+                //detects when inventory is full
+                ifinvisfull();   
+                    press(t)
+                    wait(5t)
+                    type(" cancel ")
+                    wait(5t)
+                    press(return)
+                    wait(5t)
+                    log(&bForaging ==> &7 Crafting enchanted Wood);
+
+                    for(#var,34,16,9)
+                    echo("/craft");
+                    wait(10t);
+                        getslotitemext(%#var%,&item,#stack,&dam,&name);
+                        strip(&ebois,%&name%);
+                        //log("%&ebois%")
+                        if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
+                            for(#invslot,1,14);
+                                slotclick(%#var%);
+                                wait(1t) ;  
+                            next;                   
+                        endif;
+                    press(escape)
+                    wait(10t)
+                    next;
+
+                    slot(2)
+                    key(use)
+                    wait(10t)
+                    slotclick(%#backpack%,l,true)
+                    wait(20t)
+                    getslotitemext(34,&items,#itemcounts,&dams,&names);
+                    strip(&ebois,%&names%);
+                    press(escape)
+                    wait(5t)
+                    if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
+                        if(%#itemcounts% == 64);
+                            echo("/enderchest")
+                            wait(10t)
+                            slotclick(83,l,true)
+                            wait(5t)
+                            press(escape)
+                            wait(5t)
+                        endif;
+                    endif;
+                    
+                    press(t)
+                    wait(5t)
+                    if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
+                        type(" sel r minecraft:log air ")
+                    elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
+                        type(" sel r minecraft:log2 air ")
+                    endif;
+                    wait(5t)
+                    press(return)
+                    wait(5t)
+                endif;
+            else
+                log("Warning AFK")
+                echo("/lobby")
+                wait(5000ms)
+                echo("/play sb")
+                wait(5000ms)
+                echo("/is")
+                #forag = 50
+                wait(10t)
+            endif;
+        endif;
+    loop;
+endif;

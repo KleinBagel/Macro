@@ -1,0 +1,27 @@
+set(@byexp);
+exec("hypexp.txt");
+wait(5t)
+slot(1);
+wait(5t)
+slot(1);
+do;
+    if(@mining);
+        //log("Go Mining")
+        keydown(forward);
+        if(@sneaking);
+			keydown(sneak)
+		endif
+        key(attack);
+        wait(1t)
+    else;
+        //log("Stop Mining")
+        keyup(forward)
+		if(@sneaking);
+			keyup(sneak)
+		endif	
+        set(@byexp,false)
+        exec("hypexp.txt");
+        stop();
+    endif;
+while(@mining);
+
