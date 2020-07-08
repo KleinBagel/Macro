@@ -1,0 +1,7 @@
+&text = "You are AFK."
+strip(&chat,%CHATCLEAN%);
+//log(%&chat%)
+ifcontains(%&chat%,%&text%);
+    log("AFK")
+endif;
+    

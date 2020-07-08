@@ -5,8 +5,10 @@
 #backpack = 65
 //Direction de la Farm
 set(@&yaw,east);
-//Vendre PNJ
+//Vendre PNJ True / False
 set(gotosell,false);
+//Sneak True / False
+set(@sneaking,false);
 
 //======================== ATTENTION PAS DE MODIFICATION ==============================//
 
@@ -133,15 +135,8 @@ else;
                 wait(15t);
                 slotclick(13)
                 wait(15t);
-                echo(/warp home);
-                wait(30t);
-                press(t);
-                wait(10t);
-                type(" goto 12 87 -3.5 ");
-                wait(20t);
-                press(return);
-                wait(150t);
-                        
+                echo("/is");
+					
                 set(@mining)
                 exec(hypmining.txt)        
                     
