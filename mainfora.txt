@@ -2,7 +2,7 @@
 // ======================= MODIFICATION CONFIGURATION =================================//
 
 //choisir Oak,Spruce,Birch,Dark Oak,Acacia,Jungle)
-&foraging = "Spruce"
+&foraging = "Jungle"
 //large = 56 / greater = 65
 #backpack = 65 
 
@@ -69,7 +69,7 @@ else;
     log("Go Script Mainf"); 
     set(foraginginv);
     log(&bForaging ==> &7 Script is starting!);
-    wait(10t)
+    wait(15t)
     echo("/is")
     wait(5000ms)
     echo("/hub")
@@ -77,11 +77,11 @@ else;
     for(#i,1,%#max%)
         
         press(t)
-        wait(5t)
+        wait(3t)
         type( %&text[%#i%]%)
-        wait(5t)
+        wait(3t)
         press(return)
-        wait(5t)
+        wait(3t)
     next;
 
     do;
@@ -90,8 +90,8 @@ else;
         #ypos = YPOS
         #zpos = ZPOS
         
-        //log(%ONLINEPLAYERS% %lobby%)
-        //log(%&foraging% %warp%)
+        //log(%ONLINEPLAYERS%)
+        log("Wood: %&foraging% Lobby: %lobby% Warp: %warp% VerifPos: %verifnafk%")
         //log(x:%#xpos% y:%#ypos% z:%#zpos%) 
         
         if((%ONLINEPLAYERS% > 4)&&(%lobby% == False)&&(%&foraging% == "Oak"))
@@ -116,7 +116,7 @@ else;
             log("Birch")
             set(warp)
             echo("/warp park")
-            wait(5000ms)
+            wait(6000ms)
             if((%&foraging% == "Spruce")||(%&foraging% == "Dark Oak")||(%&foraging% == "Acacia")||(%&foraging% == "Jungle"))
                 log("Spruce")
                 press(t)
@@ -148,64 +148,48 @@ else;
                             type(" goto -407 110 -29 ")
                             wait(5t)
                             press(return)
-                            wait(5t)
+                            wait(6000ms)
                         endif
                     endif
                 endif
             endif
         else
             if(verifnafk)
+                if((#forag == 12)||(#forag == 24)||(#forag == 36)||(#forag == 48))
+                    set(verifnafk,false)
+                endif
                 if(#forag == 50)
                     wait(20t)
                     press(t)
-                    wait(5t)
+                    wait(3t)
                     type(" cancel")
-                    wait(5t)
+                    wait(3t)
                     press(return)
-                    wait(5t)
+                    wait(3t)
                     press(t)
-                    wait(5t)
+                    wait(3t)
                     if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
                         type(" sel r minecraft:log air ")
                     elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
                         type(" sel r minecraft:log2 air ")
                     endif
-                    wait(5t)
+                    wait(3t)
                     press(return)
-                    wait(5t)
+                    wait(3t)
                     set(#forag,0)
                 endif;
-                
-                if(#forag == 25)
-                    set(verifnafk,false)
-                    if((%&foraging% == "Oak")&&(%#ypos% <= 71 ))
-                        set(lobby,false)
-                    elseif((%&foraging% == "Birch")&&(%#ypos% <= 80 ))
-                        set(warp,false)
-                    elseif((%&foraging% == "Spruce")&&(%#ypos% <= 88 ))
-                        set(warp,false)
-                    elseif((%&foraging% == "Dark Oak")&&(%#ypos% <= 100 ))
-                        set(warp,false)
-                    elseif((%&foraging% == "Acacia")&&(%#ypos% <= 108 ))
-                        set(warp,false)
-                    elseif((%&foraging% == "Jungle")&&(%#ypos% <= 118 ))
-                        set(warp,false)
-                    else
-                        set(verifnafk)
-                    endif
-                endif
-                
+               
                 inc(#forag,1)
                 wait(500ms)
                 
                 //detects when inventory is full
                 ifinvisfull();   
                     press(t)
-                    wait(5t)
+                    wait(3t)
                     type(" cancel ")
-                    wait(5t)
+                    wait(3t)
                     press(return)
-                    wait(5t)
+                    wait(3t)
                     log(&bForaging ==> &7 Crafting enchanted Wood);
 
                     for(#var,34,16,9)
@@ -245,25 +229,48 @@ else;
                     endif;
                     
                     press(t)
-                    wait(5t)
+                    wait(3t)
                     if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
                         type(" sel r minecraft:log air ")
                     elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
                         type(" sel r minecraft:log2 air ")
                     endif;
-                    wait(5t)
+                    wait(3t)
                     press(return)
-                    wait(5t)
+                    wait(3t)
                 endif;
             else
-                log("Warning AFK")
-                echo("/lobby")
-                wait(5000ms)
-                echo("/play sb")
-                wait(5000ms)
-                echo("/is")
-                #forag = 50
-                wait(10t)
+                if((%&foraging% == "Oak")&&(%#ypos% <= 71 ))
+                    set(lobby,false)
+                elseif((%&foraging% == "Birch")&&(%#ypos% <= 80 ))
+                    set(warp,false)
+                elseif((%&foraging% == "Spruce")&&(%#ypos% <= 88 ))
+                    set(warp,false)
+                elseif((%&foraging% == "Dark Oak")&&(%#ypos% <= 100 ))
+                    set(warp,false)
+                elseif((%&foraging% == "Acacia")&&(%#ypos% <= 108 ))
+                    set(warp,false)
+                elseif((%&foraging% == "Jungle")&&(%#ypos% <= 118 ))
+                    set(warp,false)
+                else
+                    set(verifnafk)
+                endif
+                
+                if(%verifnafk% == False)    
+                    log("Warning AFK")
+                    press(t)
+                    wait(3t)
+                    type(" cancel")
+                    wait(3t)
+                    press(return)
+                    echo("/lobby")
+                    wait(5000ms)
+                    echo("/play sb")
+                    wait(5000ms)
+                    echo("/is")
+                    #forag = 50
+                    wait(10t)
+                endif
             endif;
         endif;
     loop;
