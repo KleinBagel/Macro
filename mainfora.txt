@@ -91,7 +91,7 @@ else;
         #zpos = ZPOS
         
         //log(%ONLINEPLAYERS%)
-        log("Wood: %&foraging% Lobby: %lobby% Warp: %warp% VerifPos: %verifnafk%")
+        //log("Wood: %&foraging% Lobby: %lobby% Warp: %warp% VerifPos: %verifnafk%")
         //log(x:%#xpos% y:%#ypos% z:%#zpos%) 
         
         if((%ONLINEPLAYERS% > 4)&&(%lobby% == False)&&(%&foraging% == "Oak"))
