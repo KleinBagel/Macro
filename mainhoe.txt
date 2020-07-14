@@ -20,7 +20,7 @@ if(mininginv);
     set(mininginv,false);
     set(@farm,false);
     exec(farm1.txt)
-    stop();
+    stop(all);
 
 else;
     set(mininginv);    
