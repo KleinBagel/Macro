@@ -2,7 +2,7 @@
 // ======================= MODIFICATION CONFIGURATION =================================//
 
 //choisir Oak,Spruce,Birch,Dark Oak,Acacia,Jungle)
-&foraging = "Jungle"
+&foraging = "Spruce"
 //large = 56 / greater = 65
 #backpack = 65 
 
@@ -64,7 +64,7 @@ if(foraginginv);
     type(" sel c ")
     wait(3t)
     press(return)
-    stop();
+    stop(all);
 else;
     log("Go Script Mainf"); 
     set(foraginginv);

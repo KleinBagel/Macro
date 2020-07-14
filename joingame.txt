@@ -1,9 +1,12 @@
 log("join the game")
 echo(/play sb)
-wait(2000ms)
+wait(2500ms)
 echo(/is)
-wait(2000ms)
+wait(2500ms)
 
-exec(mainfarm.txt)
+//exec(mainfarm.txt)
 //exec(mainfora.txt)
-wait(10t)
+//exec(mainmin.txt)
+exec(mainmine.txt)
+wait(15t);
+

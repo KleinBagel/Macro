@@ -1,0 +1,32 @@
+if(mininginv);
+    set(mininginv,false);
+    log("Stop Script Main");    
+    stop();
+
+else;
+    set(mininginv);
+    PROMPT(&input,"$$?","Input to sort");
+    PROMPT(#delay,"$$?","Input delay",true,0);  
+    store("place",%&input)
+    $$p
+    do;
+        key(attack);
+        wait(15t);
+        slotclick(12)
+        wait(15t)
+        getslotitemext(13,&item,#stack,&dam,&name);
+        strip(&ecobble,%&name%);
+        log(%&ecobble% %&foo%)
+        if(%&ecobble% == );
+            wait(5t)
+            log("not")
+    
+        else
+            wait(10000ms)
+        endif
+        wait(5t)
+        press(escape)
+        wait(5t)
+    loop; 
+endif;
+

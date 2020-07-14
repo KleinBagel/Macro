@@ -1,0 +1,151 @@
+
+// ======================= MODIFICATION CONFIGURATION =================================//
+
+//choisir Minerai
+&minerai = "Diamond"
+//large = 56 / greater = 65
+#backpack = 65
+
+//======================== ATTENTION PAS DE MODIFICATION ==============================//
+
+#max = 56
+#minecpt = 50
+&position = goto 4 9 25
+&eore = "Enchanted %&minerai%"
+&eoreblock = "Enchanted %&minerai% Block"
+
+if(mineraiflag);
+    set(mineraiflag,false);
+    log("Stop Script Main Minerai %&minerai%");    
+    press(t)
+    wait(3t)
+    type(" cancel ")
+    wait(3t)
+    press(return)
+    wait(3t)
+    stop(all);
+else
+    log("Go Script Main Minerai %&minerai%"); 
+    set(mineraiflag);
+    log(&bminerai ==> &7 Script is starting!);
+    
+    do;
+        #xpos = XPOS
+        #ypos = YPOS
+        #zpos = ZPOS
+        //log(x:%#xpos% y:%#ypos% z:%#zpos% %#minecpt% %&minerai%) 
+        if(%#ypos% <= 10)
+               
+            if(#minecpt == 50)
+                
+                wait(20t)
+                press(t)
+                wait(5t)
+                type(" cancel ")
+                wait(5t)
+                press(return)
+                wait(5t)
+				press(t)
+				wait(3t)
+				type(" %&position% ")
+				wait(3t)
+				press(return)
+				wait(50t)
+                press(t)
+                wait(3t)
+                type(" sel r %&minerai%_ore air ")
+                wait(3t)
+                press(return)
+                wait(3t)
+                set(#minecpt,0)
+            endif;
+    
+            inc(#minecpt,1)
+            wait(100ms)
+            //detects when inventory is full
+            ifinvisfull(); 
+
+                log("Go craft")
+                wait(10t)
+                press(t)
+                wait(3t)
+                type(" cancel ")
+                wait(3t)
+                press(return)
+                
+                for(#var,34,16,9)
+                    echo("/craft");
+                    wait(10t)
+                    getslotitemext(%#var%,&item,#stack,&dam,&name);
+                    strip(&emine,%&name%)
+                    
+                    if(%&emine% == %&eoreblock%);
+                        set(enchantedblock,true)
+                    endif;
+                    
+                    if(%&emine% == %&eore%);
+                        for(#invslot,1,14);
+                            slotclick(%#var%);
+                            wait(1t) 
+                        next;
+                    endif;
+                    press(escape);
+                    wait(3t) 
+                next;
+                
+                if(enchantedblock);
+                    echo("/craft");
+                    wait(10t)
+                    for(#var,16,34,9)
+                        getslotitemext(%#var%,&item,#stack,&dam,&name);
+                        strip(&emine,%&name%);
+                        if(%&emine% == %&eoreblock%);
+                            for(#invslot,1,2);
+                                slotclick(%#var%);
+                                wait(1t) ;  
+                            next;
+                        endif;
+                    next;
+                    press(escape)
+                    wait(5t)
+                    slot(2)
+                    key(use)
+                    wait(10t)
+                    slotclick(%#backpack%,l,true)  
+                    wait(20t)
+                    press(escape)
+                    wait(5t)
+                    set(enchantedblock,false)
+                endif;
+                
+                wait(3t)
+                log("Stop craft")
+                wait(3t);
+                set(invfull,false);
+                
+                press(t)
+                wait(3t)
+                type(" sel r %&minerai%_ore air ")
+                wait(3t)
+                press(return)
+                wait(10t
+               
+            endif;
+        else
+			log("Warning AFK")
+			press(t)
+			wait(3t)
+			type(" cancel ")
+			wait(3t)
+			press(return)
+			echo("/lobby")
+            wait(5000ms)
+            echo("/play sb")
+            wait(5000ms)
+            echo("/is")
+            wait(2500ms)
+            #minecpt = 50
+            wait(10t)
+        endif;
+    loop;
+endif;

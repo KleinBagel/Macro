@@ -24,7 +24,7 @@ if(mininginv);
     log("Stop Script Main");    
     set(@mining,false);
     exec(hypmining.txt)
-    stop();
+    stop(all);
 
 else;
     set(mininginv);    
@@ -136,7 +136,7 @@ else;
                 slotclick(13)
                 wait(15t);
                 echo("/is");
-					
+                    
                 set(@mining)
                 exec(hypmining.txt)        
                     
