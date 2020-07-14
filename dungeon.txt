@@ -1,7 +1,7 @@
 if(mininginv);
     set(mininginv,false);
     log("Stop Script Main");    
-    stop();
+    stop(all);
 
 else;
     set(mininginv);    
