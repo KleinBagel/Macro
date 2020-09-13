@@ -1,0 +1,664 @@
+
+growth = false
+protection = false
+echant = true
+&price = "50k"
+
+
+#craftitems = 0
+#valid = 0
+#backpack = 65
+#backpack4 = 68
+
+if(enchant);
+    set(enchant,false);
+    log("Stop Script Main");    
+    stop(all);
+	wait(50t);
+
+else;
+    log("Go Script Main Farming"); 
+    set(enchant); 
+    log(&benchant;  ==> &7 Script is starting!);
+
+    do;
+    log("People:%ONLINEPLAYERS%")
+    if(%ONLINEPLAYERS% >= 5)
+        echo("/hub")
+        wait(15t)
+        press(t)
+        wait(5t)
+        type(" goto -10 70 -68 ")
+        wait(5t)
+        press(return)
+        wait(35t)
+        key(attack);
+        wait(15t);
+        slotclick(50)
+        wait(15t);
+        wait(5000ms)
+    else
+        
+        getslotitemext(7,&item,#itemcount,&dam1,&name1);
+        strip(&paper,%&name1%);
+        log(%&paper% %#itemcount%)
+        if((%&paper% == "Grand Experience Bottle")&&(%#itemcount% < 5))
+            log("Attention Bottle Xp")
+            echo("/craft")
+            wait(10t)
+            #xpslot = 72
+            do()
+                slotclick(%#xpslot%)
+                wait(10t)
+                slotclick(87)
+                wait(10t)
+                inc(#xpslot,1)
+                getslotitemext(87,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                log(%&paper% %#itemcount%)
+                if((%&paper% == "Grand Experience Bottle")&&(%#itemcount% == 64))
+                    inc(#valid,1);
+                endif
+            while(%#valid% != 1)
+            #valid = 0
+        press(escape)
+        wait(10t)
+        endif
+        
+        echo("/hub")
+        press(t);
+        wait(15t);
+        type(" goto -30 70 -76 ");
+        wait(15t);
+        press(return);
+        wait(50t)
+		looks(west,,0.1);
+		keydown(right)
+        wait(1t)
+        keyup(right)
+		
+		wait(10t)
+        
+        if(growth)
+            key(attack);
+            wait(15t);
+            slotclick(0)
+            wait(15t)
+            slotclick(24)
+            wait(15t)
+            slotclick(10)
+            wait(15t)
+            slotclick(10)
+            wait(15t)
+            #slot = 65
+            do()
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                //log(%&paper%)
+                if(%&paper% == "Air");
+                    slotclick(12)
+                    wait(15t)
+                    //log("OK")
+                endif
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                log(%&paper%)
+                if(%&paper% == "Sugar Cane");
+                    inc(#valid,1);
+                    inc(#slot,1);
+                    //log(%#valid% %#slot%)
+                else
+                    log("error pas d'achat")
+                    key(attack);
+                    wait(15t);
+                    slotclick(0)
+                    wait(15t)
+                    slotclick(24)
+                    wait(15t)
+                    slotclick(10)
+                    wait(15t)
+                    slotclick(10)
+                    wait(15t)
+                endif
+            while(%#valid% != 3)    
+            #valid = 0
+            log("finish")
+            press(escape)
+            wait(5t)
+            
+            key(attack);
+            wait(15t);
+            slotclick(27)
+            wait(15t)
+            slotclick(14)
+            wait(15t)
+            slotclick(14)
+            wait(15t)
+            slotclick(10)
+            wait(15t)
+            do()
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                //log(%&paper%)
+                if(%&paper% == "Air");
+                    slotclick(12)
+                    wait(15t)
+                    //log("OK")
+                endif
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                log(%&paper%)
+                if(%&paper% == "Enchanted Dark Oak Wood");
+                    inc(#valid,1);
+                    inc(#slot,1);
+                    //log(%#valid% %#slot%)
+                else
+                    log("error pas d'achat")
+                    key(attack);
+                    wait(15t);
+                    slotclick(27)
+                    wait(15t)
+                    slotclick(14)
+                    wait(15t)
+                    slotclick(14)
+                    wait(15t)
+                    slotclick(10)
+                    wait(15t)
+                endif
+            while(%#valid% != 1)
+            #valid = 0  
+            log("finish")
+            press(escape)
+            wait(5t)
+            
+            echo("/craft");
+            wait(10t)
+            for(#slot,83,85);
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+
+                if(%&paper% == "Sugar Cane");
+                    if(%#itemcount% == 64);
+                        slotclick(%#slot%, left, true);
+                        inc(#craftitems,-1);
+                        if(%#craftitems% == -3);
+                            wait(10t);
+                            slotclick(23, left, true);
+                            wait(10t);
+                            #craftitems = 0;
+                        endif;
+                        wait(10t)
+                    endif;
+                endif;  
+            next;
+            #craftitems = 0
+            press(escape)
+            wait(5t)
+            
+            for(#var,34,16,9)
+                echo("/craft");
+                wait(10t);
+                getslotitemext(%#var%,&item,#stack,&dam,&name);
+                strip(&ecobble,%&name%);
+                if(%&ecobble% == "Enchanted Book");
+                    for(#invslot,54,61);
+                        slotclick(%#var%);
+                        wait(1t);
+                        slotclick(%#invslot%);
+                        wait(10t);
+                    next;                 
+                endif;
+                press(escape)
+                wait(10t)
+            next;
+        endif
+        
+        if(protection)
+            
+            key(attack);
+            wait(15t);
+            slotclick(0)
+            wait(15t)
+            slotclick(24)
+            wait(15t)
+            slotclick(10)
+            wait(15t)
+            slotclick(10)
+            wait(15t)
+            #slot = 65
+            do()
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                //log(%&paper%)
+                if(%&paper% == "Air");
+                    slotclick(12)
+                    wait(15t)
+                    //log("OK")
+                endif
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                log(%&paper%)
+                if(%&paper% == "Sugar Cane");
+                    inc(#valid,1);
+                    inc(#slot,1);
+                    //log(%#valid% %#slot%)
+                else
+                    log("error pas d'achat")
+                    key(attack);
+                    wait(15t);
+                    slotclick(0)
+                    wait(15t)
+                    slotclick(24)
+                    wait(15t)
+                    slotclick(10)
+                    wait(15t)
+                    slotclick(10)
+                    wait(15t)
+                endif
+            while(%#valid% != 3)
+            log("finish")
+            #valid = 0
+            press(escape)
+            wait(5t)
+            
+            key(attack);
+            wait(15t);
+            slotclick(9)
+            wait(15t)
+            slotclick(13)
+            wait(15t)
+            slotclick(12)
+            wait(15t)
+            slotclick(10)
+            wait(15t)
+            do()
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                //log(%&paper%)
+                if(%&paper% == "Air");
+                    slotclick(12)
+                    wait(15t)
+                    log("OK")
+                endif
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+                log(%&paper%)
+                if(%&paper% == "Iron Ingot");
+                    inc(#valid,1);
+                    inc(#slot,1);
+                    log(%#valid% %#slot%)
+                else
+                    log("error pas d'achat")
+                    key(attack);
+                    wait(15t);
+                    slotclick(9)
+                    wait(15t)
+                    slotclick(13)
+                    wait(15t)
+                    slotclick(12)
+                    wait(15t)
+                    slotclick(10)
+                    wait(15t)
+                endif
+            while(%#valid% != 1)
+            #valid = 0
+            log("finish")
+            press(escape)
+            wait(5t)
+            
+            echo("/craft");
+            wait(10t)
+            for(#slot,83,85);
+                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name1);
+                strip(&paper,%&name1%);
+
+                if(%&paper% == "Sugar Cane");
+                    if(%#itemcount% == 64);
+                        slotclick(%#slot%, left, true);
+                        inc(#craftitems,-1);
+                        if(%#craftitems% == -3);
+                            wait(10t);
+                            slotclick(23, left, true);
+                            wait(10t);
+                            #craftitems = 0;
+                        endif;
+                        wait(10t)
+                    endif;
+                endif;  
+            next;
+            #craftitems = 0
+            press(escape)
+            wait(5t)
+            
+            echo("/craft");
+            wait(10t)
+            slotclick(83)
+            wait(10t)
+            slotclick(20)
+            wait(10t)
+            slotclick(84)
+            wait(10t)
+            slotclick(21)
+            wait(10t)
+            slotclick(85)
+            wait(10t)
+            slotclick(29)
+            wait(10t)
+            slotclick(86)
+            wait(10t)
+            slotclick(30)
+            wait(10t)
+            for(#invslot,63,70);
+                slotclick(23);
+                wait(1t);
+                slotclick(%#invslot%);
+                wait(10t);
+            next; 
+            press(escape)
+            wait(5t)
+        endif
+        
+		// ----------------------------------------------- ANVIL ----------------------------------------------------------------- //
+		
+        press(t)
+        wait(3t)
+        type(" goto -26 69 -128")
+        wait(3t)
+        press(return)
+        wait(160t)
+        
+        looks(north,,0.1);
+		looks(,30,0.1);
+		
+		wait(1000ms)
+		log(%HITUUID%)
+		if(%HITUUID% == "anvil")
+		
+		else
+			keydown(right)
+			wait(1t)
+			keyup(right)
+			//looks(10,30,0.1);
+			//looks(15,30,0.1);
+        endif
+		wait(10000ms)
+        if(echant)
+            wait(10t)
+            #invslot = 54
+            #invslot1 = 54
+            key(use);
+            wait(15t);
+            log("1")
+            do()
+                
+                if(%LEVEL% >= 6)
+                    slotclick(%#invslot%,left,true);
+                    wait(10t);
+                    inc(#invslot,1)
+                    inc(#craftitems,-1);
+                    log(%#invslot% %#craftitems%)
+                    if(%#craftitems% == -2);
+                        wait(5t);
+                        slotclick(22);
+                        wait(10t);
+                        slotclick(13);
+                        wait(5t);
+                        slotclick(%#invslot1%);
+                        wait(5t);
+                        inc(#invslot1,1)
+                        inc(#valid,1);
+                        #craftitems = 0;
+                    endif;
+                else
+                    wait(15t)
+                    slotclick(49);
+                    wait(5t)
+                    keydown(back)
+                    wait(1t)
+                    keyup(back)
+                    looks(,90,0.1);
+                    wait(25t)
+                    slot(7)
+                    wait(25t)
+                    key(use)
+                    wait(25t)
+                    looks(,50,0.1);
+                    wait(25t)
+                    keydown(forward)
+                    wait(1t)
+                    keyup(forward)
+                    slot(1)
+                    wait(25t)
+                    key(use);
+                    wait(15t);
+                endif
+            while(%#valid% != 4)    
+            #valid = 0
+            #craftitems = 0;
+                
+            #invslot = 63
+            #invslot1 = 63
+            log("2")
+            do()
+                
+                if(%LEVEL% >= 6)
+                    slotclick(%#invslot%,left,true);
+                    wait(10t);
+                    inc(#invslot,1)
+                    inc(#craftitems,-1);
+                    log(%#invslot% %#craftitems%)
+                    if(%#craftitems% == -2);
+                        wait(5t);
+                        slotclick(22);
+                        wait(10t);
+                        slotclick(13);
+                        wait(5t);
+                        slotclick(%#invslot1%);
+                        wait(5t);
+                        inc(#invslot1,1)
+                        inc(#valid,1);
+                        #craftitems = 0;
+                    endif;
+                else
+                    wait(15t)
+                    slotclick(49);
+                    wait(5t)
+                    keydown(back)
+                    wait(1t)
+                    keyup(back)
+                    looks(,90,0.1);
+                    wait(25t)
+                    slot(7)
+                    wait(25t)
+                    key(use)
+                    wait(25t)
+                    looks(,50,0.1);
+                    wait(25t)
+                    keydown(forward)
+                    wait(1t)
+                    keyup(forward)
+                    slot(1)
+                    wait(25t)
+                    key(use);
+                    wait(15t);
+                endif
+            while(%#valid% != 4)    
+            #valid = 0
+            #craftitems = 0;
+            
+            #invslot = 54
+            log("3")
+            do()
+                
+                #invslot1 = %#invslot% + 9
+                if(%LEVEL% >= 12)
+                    if(%LEVEL% >= 12)
+                        slotclick(%#invslot%,left,true);
+                        wait(10t);
+                        slotclick(%#invslot1%,left,true);
+                        wait(10t);
+                        slotclick(22);
+                        wait(10t);
+                        slotclick(13,left,true);
+                        wait(10t);
+                        inc(#invslot,1)
+                        inc(#valid,1);
+                    endif
+                else
+                    wait(15t)
+                    slotclick(49);
+                    wait(5t)
+                    keydown(back)
+                    wait(1t)
+                    keyup(back)
+                    looks(,90,0.1);
+                    wait(25t)
+                    slot(7)
+                    wait(25t)
+                    key(use)
+                    wait(25t)
+                    looks(,50,0.1);
+                    wait(25t)
+                    keydown(forward)
+                    wait(1t)
+                    keyup(forward)
+                    slot(1)
+                    wait(25t)
+                    key(use);
+                    wait(15t);
+                endif
+            while(%#valid% != 4)
+            #craftitems = 0;            
+            #valid = 0
+            
+            press(escape)
+            wait(5t)
+            endif
+			
+            press(t);
+            wait(10t);
+            type(" goto -23 69 -121");
+            wait(10t);
+            press(return);
+			wait(10t)
+            press(t);
+            wait(10t);
+            type(" goto -30 72 -94");
+            wait(10t);
+            press(return);
+            wait(100t)
+            looks(north,,0.1);
+            
+            key(attack);
+            wait(15t);
+            slotclick(15)
+            wait(15t)
+            getslotitemext(19,&item,#itemcount,&dam1,&name1);
+            strip(&paperi,%&item%);
+            log("1_1:%&paperi%")
+            if(%&paperi% == "stained_glass_pane");
+                #slotvend = 21
+                slotclick(%#slotvend%)
+                wait(15t)
+            else
+                #slotvend = 30
+                slotclick(%#slotvend%)
+                wait(15t)
+            endif
+            //A voir avec l'item
+            getslotitemext(%#slotvend%,&item,#itemcount,&dam1,&name1);
+            strip(&paperi,%&item%);
+            log("1_2:%&paperi%")
+            if(%&paperi% == "stained_glass_pane");
+                press(escape)
+                wait(10t)
+            else
+                log("Nice Bitch")
+                wait(5000ms)
+            endif
+            #varslot = 83
+            do()
+                key(attack);
+                wait(15t);
+                slotclick(15)
+                wait(15t)
+                
+                getslotitemext(19,&item,#itemcount,&dam1,&name1);
+                strip(&paperi,%&item%);
+                log("1_3:%&paperi%")
+                getslotitemext(25,&item2,#itemcount2,&dam2,&name2);
+                strip(&paper2,%&name2%);2
+                log("2_1:%&paper2%")
+                
+                if(%&paperi% == "stained_glass_pane");
+                    slotclick(24)
+                    wait(15t)
+					set(flag,false)
+                    log("1")
+                else
+                    slotclick(33)
+                    wait(15t)
+					set(flag,true)
+                    log("2")
+                endif
+            
+                if((%&paper2% != "Air")&&(flag));
+                    #valid = 4
+                    slotclick(31)
+                    wait(15t)
+                    slotclick(31)
+                    wait(15t)
+                    
+                    slot(2)
+                    key(use)
+                    wait(10t)
+                    getslotitemext(35,&item,#itemcount,&dam,&name);
+                    strip(&paper,%&name%);
+                    log("2:%&paper%")
+                    if(%&paper% == "Air");
+                        for(#slotbackpack,65,68);
+                            slotclick(%#slotbackpack%,l,true)  
+                            wait(10t)
+                        next;
+                        press(escape)
+                        wait(10t)
+                        slot(1)
+                        wait(10t)
+                    else
+                        log("Stop Script Main Backpack FULL");
+                        press(escape)
+                        wait(10t)    
+                        stop(all);
+                    endif
+                else
+                    slotclick(33)
+                    wait(15t)
+                    slotclick(10)
+                    wait(15t)
+                    log(%#varslot%)
+                    slotclick(%#varslot%,l,true)
+                    wait(15t)
+                    slotclick(31)
+                    wait(15t)
+                    type("%&price%")
+                    wait(10t)
+                    press(escape)
+                    wait(10t)
+                    slotclick(29)
+                    wait(15t)
+                    slotclick(11)
+                    wait(15t)
+                    slotclick(49)
+                    wait(15t)
+                    inc(#valid,1);
+                    inc(#varslot,1);
+                endif
+
+            while(%#valid% != 4)
+            #valid = 0
+            
+        endif
+    endif;
+    loop; 
+endif;
+

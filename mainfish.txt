@@ -1,0 +1,83 @@
+set(#farmcpt,0)
+
+if(fishflag);
+    set(fishflag,false);
+    log("Stop Script Main fish");
+    stop(all);
+	wait(50t);
+else
+    log("Go Script Main fish"); 
+    set(fishflag);
+    log(&bFishing==> &7 Script is starting!);
+    slot(2)
+    key(use)
+    wait(5t)
+    do;
+        #xpos = XPOS
+        #ypos = YPOS
+        #zpos = ZPOS
+
+        if((%#ypos% >= 75)&&(%#ypos% <= 84))
+            getfishhook(#x,#xp,#y,#yp,#z,#zp)
+            inc(#farmcpt,1)
+            if((%#yp% < 810 )&&(#farmcpt > 50))
+                log(%#yp% %#farmcpt%)
+            endif
+            if((%#yp% > 5 )&&(%#yp% < 805 )&&(#farmcpt > 50))
+                key(use)
+                wait(5t)
+                slot(1)
+                wait(50t)
+                press(t);
+                wait(10t);
+                type(" goto -307 82 -63");
+                wait(10t);
+                press(return);
+                wait(50t)
+                looks(south,,0.1);
+                looks(,50,0.1);
+                wait(5t)
+                slot(2)
+                key(use)
+                set(#farmcpt,0)
+            elseif((%#yp% < 1 )&&(#farmcpt > 5))
+                slot(1)
+                wait(50t)
+                press(t);
+                wait(10t);
+                type(" goto -307 82 -63");
+                wait(10t);
+                press(return);
+                wait(50t)
+                looks(south,,0.1);
+                looks(,50,0.1);
+                wait(5t)
+                slot(2)
+                key(use)
+                set(#farmcpt,0)
+            elseif(#farmcpt > 200)
+                key(use)
+                wait(10t)
+                key(use)
+                set(#farmcpt,0)
+            endif;
+        else
+            log("Warning AFK")
+            echo("/lobby")
+            wait(5000ms)
+            echo("/play sb")
+            wait(5000ms)
+            echo("/is")
+            wait(2500ms)
+            echo("/warp park")
+            wait(2500ms)
+            press(t);
+            wait(10t);
+            type(" goto -307 82 -63");
+            wait(10t);
+            press(return);
+            wait(250t)
+            set(#farmcpt,0)
+        endif;
+    loop;
+endif;

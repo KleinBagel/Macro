@@ -25,6 +25,7 @@ if(mininginv);
     set(@mining,false);
     exec(hypmining.txt)
     stop(all);
+	wait(50t);
 
 else;
     set(mininginv);    

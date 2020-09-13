@@ -10,9 +10,12 @@
 
 #max = 56
 #minecpt = 50
-&position = goto 4 9 25
+&position = goto 5 9 26
 &eore = "Enchanted %&minerai%"
 &eoreblock = "Enchanted %&minerai% Block"
+#max = 2
+&text[1] = "sel 1 4 9 26"
+&text[2] = "sel 2 -4 9 3"
 
 if(mineraiflag);
     set(mineraiflag,false);
@@ -23,11 +26,27 @@ if(mineraiflag);
     wait(3t)
     press(return)
     wait(3t)
+    press(t)
+    wait(3t)
+    type(" sel c ")
+    wait(3t)
+    press(return)
     stop(all);
 else
-    log("Go Script Main Minerai %&minerai%"); 
+    log("Go Script Main Minerai %&minerai%");
+    wait(10t) 
     set(mineraiflag);
     log(&bminerai ==> &7 Script is starting!);
+    
+      for(#i,1,%#max%)
+        
+        press(t)
+        wait(3t)
+        type( %&text[%#i%]%)
+        wait(3t)
+        press(return)
+        wait(3t)
+    next;
     
     do;
         #xpos = XPOS
@@ -45,12 +64,12 @@ else
                 wait(5t)
                 press(return)
                 wait(5t)
-				press(t)
-				wait(3t)
-				type(" %&position% ")
-				wait(3t)
-				press(return)
-				wait(50t)
+                press(t)
+                wait(3t)
+                type(" %&position% ")
+                wait(3t)
+                press(return)
+                wait(50t)
                 press(t)
                 wait(3t)
                 type(" sel r %&minerai%_ore air ")
@@ -132,13 +151,13 @@ else
                
             endif;
         else
-			log("Warning AFK")
-			press(t)
-			wait(3t)
-			type(" cancel ")
-			wait(3t)
-			press(return)
-			echo("/lobby")
+            log("Warning AFK")
+            press(t)
+            wait(3t)
+            type(" cancel ")
+            wait(3t)
+            press(return)
+            echo("/lobby")
             wait(5000ms)
             echo("/play sb")
             wait(5000ms)

@@ -2,9 +2,11 @@
 // ======================= MODIFICATION CONFIGURATION =================================//
 
 //choisir Oak,Spruce,Birch,Dark Oak,Acacia,Jungle)
-&foraging = "Spruce"
+&foraging = "Oak"
 //large = 56 / greater = 65
-#backpack = 65 
+#backpack = 65
+//Vendre Auto   set(lobby,false)
+set(gotosell)
 
 //======================== ATTENTION PAS DE MODIFICATION ==============================//
 
@@ -12,6 +14,7 @@
 set(lobby,false)
 set(warp,false)
 set(verifnafk)
+set(position)
 
 if(%&foraging% == "Oak")
     #max = 8
@@ -22,7 +25,7 @@ if(%&foraging% == "Oak")
     &text[5] = "sel 1 -161 73 -23"
     &text[6] = "sel 2 -129 71 7"
     &text[7] = "sel 1 -132 73 -49"
-    &text[8] = "sel 2 -102 76 -27"
+    &text[8] = "sel 2 -110 76 -27"
 elseif(%&foraging% == "Spruce")
 
     #max = 4
@@ -65,6 +68,7 @@ if(foraginginv);
     wait(3t)
     press(return)
     stop(all);
+    wait(50t);
 else;
     log("Go Script Mainf"); 
     set(foraginginv);
@@ -86,23 +90,20 @@ else;
 
     do;
         
-        #xpos = XPOS
+		#xpos = XPOS
         #ypos = YPOS
         #zpos = ZPOS
-        
-        //log(%ONLINEPLAYERS%)
+        //log("People:%ONLINEPLAYERS%")
         //log("Wood: %&foraging% Lobby: %lobby% Warp: %warp% VerifPos: %verifnafk%")
-        //log(x:%#xpos% y:%#ypos% z:%#zpos%) 
-        
-        if((%ONLINEPLAYERS% > 4)&&(%lobby% == False)&&(%&foraging% == "Oak"))
+
+        if((%ONLINEPLAYERS% >= 5)&&(%lobby% == False)&&(%&foraging% == "Oak"))
             wait(30t)
             log("Oak")
-            set(lobby)
             echo("/hub")
             wait(15t)
             press(t)
             wait(5t)
-            type(" goto -9 70 -80 ")
+            type(" goto -10 70 -67 ")
             wait(5t)
             press(return)
             wait(35t)
@@ -158,14 +159,43 @@ else;
                 if((#forag == 12)||(#forag == 24)||(#forag == 36)||(#forag == 48))
                     set(verifnafk,false)
                 endif
+                set(lobby)
+                
                 if(#forag == 50)
-                    wait(20t)
+                    if(position)
+                        #xpos1 = XPOS
+                        #zpos1 = ZPOS
+                        set(position,false)
+                    else
+                        #xpos2 = XPOS
+                        #zpos2 = ZPOS
+                        set(position)
+                    endif;
+                    wait(10t)
                     press(t)
                     wait(3t)
                     type(" cancel")
                     wait(3t)
                     press(return)
                     wait(3t)
+                    if((%#xpos1% == %#xpos2%)&&(%#zpos1% == %#zpos2%))
+                        log("OK")
+                        keydown(forward)
+                        wait(2t)
+                        keyup(forward)
+                        wait(1t)
+                        keydown(backward)
+                        wait(2t)
+                        keyup(backward)
+                        wait(1t)
+                        keydown(left)
+                        wait(2t)
+                        keyup(left)
+                        wait(1t)
+                        keydown(right)
+                        wait(2t)
+                        keyup(right)
+                    endif;
                     press(t)
                     wait(3t)
                     if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
@@ -178,7 +208,7 @@ else;
                     wait(3t)
                     set(#forag,0)
                 endif;
-               
+                
                 inc(#forag,1)
                 wait(500ms)
                 
@@ -213,18 +243,58 @@ else;
                     wait(10t)
                     slotclick(%#backpack%,l,true)
                     wait(20t)
-                    getslotitemext(34,&items,#itemcounts,&dams,&names);
+                    getslotitemext(35,&items,#itemcounts,&dams,&names);
                     strip(&ebois,%&names%);
                     press(escape)
                     wait(5t)
                     if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
                         if(%#itemcounts% == 64);
-                            echo("/enderchest")
-                            wait(10t)
-                            slotclick(83,l,true)
-                            wait(5t)
-                            press(escape)
-                            wait(5t)
+                            if(gotosell)
+                                slot(2)
+                                key(use)
+                                wait(10t)
+                                for(#sloth,35,0)
+                                getslotitem(%#sloth%)
+                                    slotclick(%#sloth%, left, true)
+                                    wait(10t)
+                                next;
+                                wait(5t)
+                                press(escape)
+                                wait(5t)
+                                slot(1)
+                                wait(20t)
+                                press(t)
+                                wait(3t)
+                                type(" goto -34 70 -75 ")
+                                wait(3t)
+                                press(return)
+                                wait(250t)
+                                looks(north,,0.1);
+                                wait(1t)
+                                key(attack)
+                                wait(10t)
+                                slotclick(74)
+                                wait(10t)
+                                slotclick(16)
+                                wait(10t)
+                                slotclick(12)
+                                wait(10t)
+                                slotclick(13)
+                                wait(10t)
+                                press(t)
+                                wait(3t)
+                                type(" goto -110 74 -33 ")
+                                wait(3t)
+                                press(return)
+                                wait(200t)
+                            else
+                                echo("/enderchest")
+                                wait(10t)
+                                slotclick(83,l,true)
+                                wait(5t)
+                                press(escape)
+                                wait(5t)
+                            endif
                         endif;
                     endif;
                     
@@ -240,7 +310,18 @@ else;
                     wait(3t)
                 endif;
             else
-                if((%&foraging% == "Oak")&&(%#ypos% <= 71 ))
+                if((%&foraging% == "Oak")&&(%#ypos% == 70 ))
+                    set(lobby,false)
+                    set(verifnafk)
+                    log("Warning")
+                    press(t)
+                    wait(3t)
+                    type(" cancel")
+                    wait(3t)
+                    press(return)
+                    wait(10t)
+                    #forag = 50
+                elseif((%&foraging% == "Oak")&&(%#ypos% <= 69 ))
                     set(lobby,false)
                 elseif((%&foraging% == "Birch")&&(%#ypos% <= 80 ))
                     set(warp,false)
@@ -252,7 +333,7 @@ else;
                     set(warp,false)
                 elseif((%&foraging% == "Jungle")&&(%#ypos% <= 118 ))
                     set(warp,false)
-                else
+                elseif
                     set(verifnafk)
                 endif
                 
@@ -263,11 +344,16 @@ else;
                     type(" cancel")
                     wait(3t)
                     press(return)
+                    wait(3t)
                     echo("/lobby")
                     wait(5000ms)
                     echo("/play sb")
                     wait(5000ms)
                     echo("/is")
+                    wait(3t)
+                    log("Oak")
+                    echo("/hub")
+                    wait(15t)
                     #forag = 50
                     wait(10t)
                 endif

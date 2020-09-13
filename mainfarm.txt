@@ -2,7 +2,7 @@
 // ======================= MODIFICATION CONFIGURATION =================================//
 
 //choisir Potato Carrot Melon Pumpkin Sugar
-&farming = "Potato"
+&farming = "Sugar"
 //large = 56 / greater = 65
 #backpack = 65 
 //true : Enchanted Carrot / False : Great Carrot
@@ -37,6 +37,7 @@ if(farmingflag);
     press(return)
     wait(3t)
     stop(all);
+	wait(50t);
 else
     log("Go Script Main Farming"); 
     set(farmingflag);
@@ -53,15 +54,16 @@ else
         #xpos = XPOS
         #ypos = YPOS
         #zpos = ZPOS
+
         //log(x:%#xpos% y:%#ypos% z:%#zpos% %#farmcpt% %&farming%) 
         if((%#ypos% <= 10)||(%#ypos% >= 240))
             
-            if(((%#xpos% >= 75)&&(%#zpos% >= -70))&&((%&farming% == "Melon")||(%&farming% == "Pumpkin")||(%&farming% == "Sugar")))
+            if((%#xpos% >= 77)&&((%&farming% == "Melon")||(%&farming% == "Pumpkin")||(%&farming% == "Sugar"))
                 echo("/hub")
             endif    
             if(#farmcpt == 1000)
                 
-                wait(20t)
+                wait(25t)
                 press(t)
                 wait(5t)
                 type(" cancel ")
@@ -76,6 +78,8 @@ else
                     press(return)
                     wait(50t)
                 endif;
+                echo(/pickupstash)
+                wait(3t)
                 press(t)
                 wait(3t)
                 type(" farm ")
@@ -97,6 +101,7 @@ else
                 type(" cancel ")
                 wait(3t)
                 press(return)
+                wait(3t)
                 
                 for(#var,34,16,9)
                     echo("/craft");
@@ -125,6 +130,8 @@ else
                         next;
                         if((%&efood% == %&epumpkin%)||((%&efood% == %&ecarrot%)&&(carrotinventory)))
                             set(notenchantedblock,true)
+                            slotclick(83);
+                            wait(1t);
                         endif;
                     endif;
                     
@@ -136,7 +143,7 @@ else
                         next;
                     endif
                     press(escape);
-                    wait(3t) 
+                    wait(5t) 
                 next;
                 
                 if(notenchantedblock)
@@ -173,6 +180,8 @@ else
                                 slotclick(%#var%);
                                 wait(1t) ;  
                             next;
+                            slotclick(83);
+                            wait(1t) ;
                         endif;
                     next
                     press(escape)
@@ -197,7 +206,7 @@ else
                 type(" farm ")
                 wait(3t)
                 press(return)
-                wait(10t
+                wait(10t)
                
             endif;
         else
