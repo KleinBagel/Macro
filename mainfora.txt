@@ -5,7 +5,7 @@
 &foraging = "Oak"
 //large = 56 / greater = 65
 #backpack = 65
-//Vendre Auto   set(lobby,false)
+//Vendre Auto   set(gotosell,false)
 set(gotosell)
 
 //======================== ATTENTION PAS DE MODIFICATION ==============================//
