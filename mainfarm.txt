@@ -1,18 +1,19 @@
 
-// ======================= MODIFICATION CONFIGURATION =================================//
+// ======================= MODIFICATION CONFIGURATION ================================= //
 
-//choisir Potato Carrot Melon Pumpkin Sugar
-&farming = "Sugar"
-//large = 56 / greater = 65
-#backpack = 65 
+//choisir Potato Carrot Melon Pumpkin Sugar Nether
+&farming = "Carrot"
+//Large = 56 / Greater = 65 / Jumbo = 83
+#backpack = 83
 //true : Enchanted Carrot / False : Great Carrot
 set(carrotinventory,false)
 
-//======================== ATTENTION PAS DE MODIFICATION ==============================//
+// ======================== ATTENTION PAS DE MODIFICATION ============================== //
 
 #candy = 0
 #max = 56
 #farmcpt = 1000
+#farmcpt1 = 0
 &epotato = "Enchanted Potato"
 &ebakedpotato = "Enchanted Baked Potato"
 &simplecarrot = "Simple Carrot Candy"
@@ -23,84 +24,102 @@ set(carrotinventory,false)
 &epumpkin = "Enchanted Pumpkin"
 &esugar = "Enchanted Sugar"
 &esugarcane = "Enchanted Sugar Cane"
+&enetherwart = "Enchanted Nether Wart"
+&emutantnetherwart = "Mutant Nether Wart"
 
 set(notenchantedblock,false)
 set(target,false)
+set(position)
 
 if(farmingflag);
     set(farmingflag,false);
     log("Stop Script Main Farming");    
-    press(t)
-    wait(3t)
-    type(" cancel ")
-    wait(3t)
-    press(return)
-    wait(3t)
+    cancel()
     stop(all);
-	wait(50t);
+    wait(50t);
 else
     log("Go Script Main Farming"); 
     set(farmingflag);
     log(&bFarming ==> &7 Script is starting!);
     
     if(%&farming% == "Potato")
-       &position = goto 50 9 8
+       #positionx = 50
     elseif(%&farming% == "Carrot")
        #max = 59
-       &position = goto -50 9 8
+       #positionx = -50
     endif;
      
     do;
         #xpos = XPOS
         #ypos = YPOS
         #zpos = ZPOS
-
+        
+        //log(%#farmcpt% %#farmcpt1%)
         //log(x:%#xpos% y:%#ypos% z:%#zpos% %#farmcpt% %&farming%) 
         if((%#ypos% <= 10)||(%#ypos% >= 240))
             
             if((%#xpos% >= 77)&&((%&farming% == "Melon")||(%&farming% == "Pumpkin")||(%&farming% == "Sugar"))
                 echo("/hub")
-            endif    
-            if(#farmcpt == 1000)
-                
-                wait(25t)
-                press(t)
-                wait(5t)
-                type(" cancel ")
-                wait(5t)
-                press(return)
-                wait(5t)
-                if((%&farming% == "Potato")||(%&farming% == "Carrot"))
-                    press(t)
-                    wait(3t)
-                    type(" %&position% ")
-                    wait(3t)
-                    press(return)
-                    wait(50t)
+            endif
+            if(#farmcpt1 == 10)
+                if(position)
+                    #xpos1 = XPOS
+                    #zpos1 = ZPOS
+                    set(position,false)
+                else
+                    #xpos2 = XPOS
+                    #zpos2 = ZPOS
+                    set(position)
                 endif;
-                echo(/pickupstash)
+                if((%#xpos1% == %#xpos2%)&&(%#zpos1% == %#zpos2%))
+                    log("OK AFK !!!")
+                    cancel()
+                    keydown(forward)
+                    keydown(sneak)
+                    wait(3t)
+                    keyup(forward)
+                    wait(1t)
+                    keyup(sneak)
+                    keydown(backward)
+                    wait(3t)
+                    keyup(backward)
+                    wait(1t)
+                    keydown(left)
+                    keydown(sneak)
+                    wait(3t)
+                    keyup(left)
+                    wait(1t)
+                    keydown(right)
+                    wait(3t)
+                    keyup(sneak)
+                    keyup(right)
+                    wait(3t)
+                    farm()
+                endif;
+                set(#farmcpt1,0)
+            endif;
+            if(#farmcpt == 1000)
+                wait(25t)
+                cancel()
+                if((%&farming% == "Potato")||(%&farming% == "Carrot"))
+					goto(%#positionx%,9,8)
+                endif;
+				wait(75t)
+                echo("/pickupstash")
                 wait(3t)
-                press(t)
-                wait(3t)
-                type(" farm ")
-                wait(3t)
-                press(return)
-                wait(3t)
+                farm()
                 set(#farmcpt,0)
             endif;
     
             inc(#farmcpt,1)
+            inc(#farmcpt1,1)
             wait(100ms)
             //detects when inventory is full
             ifinvisfull(); 
 
                 log("Go craft")
                 wait(10t)
-                press(t)
-                wait(3t)
-                type(" cancel ")
-                wait(3t)
-                press(return)
+				cancel()
                 wait(3t)
                 
                 for(#var,34,16,9)
@@ -122,7 +141,7 @@ else
                         #candy = 0
                     endif;
                     
-                    if((%&efood% == %&epotato%)||(%&efood% == %&ecarrot%)||(%&efood% == %&emelon%)||(%&efood% == %&epumpkin%)||(%&efood% == %&esugar%));
+                    if((%&efood% == %&epotato%)||(%&efood% == %&ecarrot%)||(%&efood% == %&emelon%)||(%&efood% == %&epumpkin%)||(%&efood% == %&esugar%)||(%&efood% == %&enetherwart%));
                         set(target,true)
                         for(#invslot,1,14);
                             slotclick(%#var%);
@@ -141,7 +160,7 @@ else
                             slotclick(%#invslot%);
                             wait(10t);  
                         next;
-                    endif
+                    endif;
                     press(escape);
                     wait(5t) 
                 next;
@@ -201,12 +220,7 @@ else
                 wait(3t);
                 set(invfull,false);
                 
-                press(t)
-                wait(3t)
-                type(" farm ")
-                wait(3t)
-                press(return)
-                wait(10t)
+                farm()
                
             endif;
         else

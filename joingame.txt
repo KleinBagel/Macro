@@ -1,13 +1,24 @@
-log("join the game")
-echo(/play sb)
-wait(2500ms)
-echo(/is)
-wait(2500ms)
 
-//exec(mainfarm.txt)
-exec(mainfora.txt)
-//exec(mainmin.txt)
-//exec(mainmine.txt)
-
-wait(15t);
-
+log("join Games")
+wait(25t)
+#xpos = XPOS
+#ypos = YPOS
+#zpos = ZPOS
+getslotitemext(1,&item,#stack,&dam,&name);
+log("x: %#xpos% y: %#ypos% z: %#zpos% item: %&item% %SERVER%")
+if(%SERVER% == "mc.hypixel.net.")
+    if(((%&item% == "compass")||(%&item% == "air"))&&(((%#xpos% >= -155)&&(%#xpos% <= -145)&&(%#ypos% == 69)&&(%#zpos% >= 145)&&(%#zpos% <= 150))||((%#xpos% == 41)&&(%#ypos% == 87)&&(%#zpos% == 22))))
+        log("join Hypixel")
+        echo("/play sb")
+        wait(2500ms)
+        echo("/is")
+        wait(2500ms)
+        
+        //exec(mainfarm.txt)
+        exec(mainfora.txt)
+        //exec(mainmin.txt)
+        //exec(mainmine.txt)    
+        
+        wait(10t)
+    endif;
+endif;

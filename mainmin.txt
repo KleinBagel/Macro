@@ -116,7 +116,7 @@ else;
                 wait(2t);
                 slot(1);
                 wait(20t);
-                echo(/hub);
+                echo("/hub");
                 wait(30t);
                 slot(2)
                 wait(20t)

@@ -3,79 +3,54 @@
 
 //choisir Minerai
 &minerai = "Diamond"
-//large = 56 / greater = 65
-#backpack = 65
+//Large = 56 / Greater = 65 / Jumbo = 83
+#backpack = 83
 
 //======================== ATTENTION PAS DE MODIFICATION ==============================//
 
 #max = 56
 #minecpt = 50
-&position = goto 5 9 26
 &eore = "Enchanted %&minerai%"
 &eoreblock = "Enchanted %&minerai% Block"
 #max = 2
-&text[1] = "sel 1 4 9 26"
-&text[2] = "sel 2 -4 9 3"
+&posx[1] = 3;  &posy[1] = 9; &posz[1] = 25
+&posx[2] = -3; &posy[2] = 9; &posz[2] = 3
 
 if(mineraiflag);
     set(mineraiflag,false);
     log("Stop Script Main Minerai %&minerai%");    
-    press(t)
-    wait(3t)
-    type(" cancel ")
-    wait(3t)
-    press(return)
-    wait(3t)
-    press(t)
-    wait(3t)
-    type(" sel c ")
-    wait(3t)
-    press(return)
+    cancel()
+    selclear()
     stop(all);
+	wait(50t)
 else
     log("Go Script Main Minerai %&minerai%");
     wait(10t) 
     set(mineraiflag);
     log(&bminerai ==> &7 Script is starting!);
+    #i = 1
+    do()
+	
+		selstart(%&posx[%#i%]%,%&posy[%#i%]%,%&posz[%#i%]%)
+		inc(#i,1)
+		selend(%&posx[%#i%]%,%&posy[%#i%]%,%&posz[%#i%]%)
+		inc(#i,1)
+		
+	until(%#i% >= %#max%)
     
-      for(#i,1,%#max%)
-        
-        press(t)
-        wait(3t)
-        type( %&text[%#i%]%)
-        wait(3t)
-        press(return)
-        wait(3t)
-    next;
-    
-    do;
+    do()
         #xpos = XPOS
         #ypos = YPOS
         #zpos = ZPOS
         //log(x:%#xpos% y:%#ypos% z:%#zpos% %#minecpt% %&minerai%) 
         if(%#ypos% <= 10)
-               
+			
             if(#minecpt == 50)
-                
-                wait(20t)
-                press(t)
-                wait(5t)
-                type(" cancel ")
-                wait(5t)
-                press(return)
-                wait(5t)
-                press(t)
-                wait(3t)
-                type(" %&position% ")
-                wait(3t)
-                press(return)
+				
+                cancel()
+				goto(5,9,26)
                 wait(50t)
-                press(t)
-                wait(3t)
-                type(" sel r %&minerai%_ore air ")
-                wait(3t)
-                press(return)
-                wait(3t)
+				selreplace(%&minerai%_ore,air)
                 set(#minecpt,0)
             endif;
     
@@ -86,11 +61,7 @@ else
 
                 log("Go craft")
                 wait(10t)
-                press(t)
-                wait(3t)
-                type(" cancel ")
-                wait(3t)
-                press(return)
+                cancel()
                 
                 for(#var,34,16,9)
                     echo("/craft");
@@ -142,21 +113,12 @@ else
                 wait(3t);
                 set(invfull,false);
                 
-                press(t)
-                wait(3t)
-                type(" sel r %&minerai%_ore air ")
-                wait(3t)
-                press(return)
-                wait(10t
+                selreplace(%&minerai%_ore,air)
                
             endif;
         else
             log("Warning AFK")
-            press(t)
-            wait(3t)
-            type(" cancel ")
-            wait(3t)
-            press(return)
+            cancel()
             echo("/lobby")
             wait(5000ms)
             echo("/play sb")

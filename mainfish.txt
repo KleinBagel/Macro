@@ -9,7 +9,7 @@ else
     log("Go Script Main fish"); 
     set(fishflag);
     log(&bFishing==> &7 Script is starting!);
-    slot(2)
+    slot(3)
     key(use)
     wait(5t)
     do;
@@ -17,43 +17,53 @@ else
         #ypos = YPOS
         #zpos = ZPOS
 
-        if((%#ypos% >= 75)&&(%#ypos% <= 84))
+        //if((%#ypos% >= 75)&&(%#ypos% <= 84))
+		if((%#ypos% >= 65)&&(%#ypos% <= 84))
             getfishhook(#x,#xp,#y,#yp,#z,#zp)
             inc(#farmcpt,1)
-            if((%#yp% < 810 )&&(#farmcpt > 50))
+            //if((%#yp% < 810 )&&(#farmcpt > 50))
                 log(%#yp% %#farmcpt%)
-            endif
-            if((%#yp% > 5 )&&(%#yp% < 805 )&&(#farmcpt > 50))
+				
+            //endif
+            if((%#yp% > 1 )&&(%#yp% < 805 )&&(#farmcpt > 50))
                 key(use)
                 wait(5t)
                 slot(1)
                 wait(50t)
                 press(t);
                 wait(10t);
-                type(" goto -307 82 -63");
+                //type(" goto -307 82 -63");
+				type(" goto -70 69 33");
                 wait(10t);
                 press(return);
                 wait(50t)
-                looks(south,,0.1);
-                looks(,50,0.1);
+                //looks(south,,0.1);
+				looks(north,,0.1);
+                looks(,40,0.1);
                 wait(5t)
-                slot(2)
+                slot(3)
                 key(use)
+				looks(-1,,0.01);        
+				looks(+1,,0.01);
                 set(#farmcpt,0)
-            elseif((%#yp% < 1 )&&(#farmcpt > 5))
+            elseif((%#yp% <= 0 )&&(#farmcpt > 5))
                 slot(1)
                 wait(50t)
                 press(t);
                 wait(10t);
-                type(" goto -307 82 -63");
+                //type(" goto -307 82 -63");
+				type(" goto -70 69 33");
                 wait(10t);
                 press(return);
                 wait(50t)
-                looks(south,,0.1);
-                looks(,50,0.1);
+                //looks(south,,0.1);
+				looks(north,,0.1);
+                looks(,40,0.1);
                 wait(5t)
-                slot(2)
+                slot(3)
                 key(use)
+				looks(-1,,0.01);        
+				looks(+1,,0.01);
                 set(#farmcpt,0)
             elseif(#farmcpt > 200)
                 key(use)
@@ -68,12 +78,13 @@ else
             echo("/play sb")
             wait(5000ms)
             echo("/is")
-            wait(2500ms)
+            wait(2500ms)+
             echo("/warp park")
             wait(2500ms)
             press(t);
             wait(10t);
-            type(" goto -307 82 -63");
+            //type(" goto -307 82 -63");
+			type(" goto -70 69 33");
             wait(10t);
             press(return);
             wait(250t)

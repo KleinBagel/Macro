@@ -3,6 +3,8 @@ strip(&chat,%CHATCLEAN%);
 //log(%&chat%)
 ifcontains(%&chat%,%&text%);
     log("AFK")
-    //exec(joingame.txt)
+    echo("/lobby")
+    wait(5t)
+    exec(joingame.txt)
 endif;
     
