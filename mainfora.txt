@@ -20,15 +20,19 @@ set(position)
 #craftitems = 0;
 
 if(%&foraging% == "Oak")
-    #max = 8
-    &posx[1] = -147; &posy[1] = 77; &posz[1] = -42
-    &posx[2] = -204; &posy[2] = 74; &posz[2] = -75
-    &posx[3] = -214; &posy[3] = 74; &posz[3] = -7
-    &posx[4] = -162; &posy[4] = 77; &posz[4] = -41
-    &posx[5] = -161; &posy[5] = 73; &posz[5] = -23
-    &posx[6] = -129; &posy[6] = 71; &posz[6] = 7
-    &posx[7] = -135; &posy[7] = 73; &posz[7] = -49
-    &posx[8] = -110; &posy[8] = 76; &posz[8] = -27
+    #max = 12
+    &posx[1] = -151;  &posy[1] = 77;  &posz[1] = -42
+    &posx[2] = -204;  &posy[2] = 74;  &posz[2] = -75
+    &posx[3] = -214;  &posy[3] = 74;  &posz[3] = -7
+    &posx[4] = -162;  &posy[4] = 77;  &posz[4] = -41
+    &posx[5] = -161;  &posy[5] = 73;  &posz[5] = -23
+    &posx[6] = -129;  &posy[6] = 71;  &posz[6] = 7
+    &posx[7] = -135;  &posy[7] = 73;  &posz[7] = -49
+    &posx[8] = -110;  &posy[8] = 76;  &posz[8] = -27
+	&posx[9] = -144;  &posy[9] = 77;  &posz[9] = -65
+	&posx[10] = -148; &posy[10] = 74; &posz[10] = -53
+	&posx[11] = -141; &posy[11] = 74; &posz[11] = -42
+	&posx[12] = -141; &posy[12] = 77; &posz[12] = -42
     
 elseif(%&foraging% == "Spruce")
     #max = 8
@@ -98,6 +102,7 @@ else;
         #zpos = ZPOS
         //log("People:%ONLINEPLAYERS%")
         //log("Wood: %&foraging% Lobby: %lobby% Warp: %warp% VerifPos: %verifnafk%")
+		//log("%#forag% %#forag1%")
 
         if((%ONLINEPLAYERS% >= 82)&&(%lobby% == False)&&(%&foraging% == "Oak"))
             wait(30t)
@@ -142,42 +147,50 @@ else;
                 if((#forag == 12)||(#forag == 24)||(#forag == 36)||(#forag == 48))
                     set(verifnafk,false)
                 endif
-                set(lobby)
-                
+                set(lobby) 
+				if(#forag1 == 10)
+					if(position)
+						#xpos1 = XPOS
+						#zpos1 = ZPOS
+						set(position,false)
+					else
+						#xpos2 = XPOS
+						#zpos2 = ZPOS
+						set(position)
+					endif;
+					if((%#xpos1% == %#xpos2%)&&(%#zpos1% == %#zpos2%))
+						log("OK AFK !!!")
+						cancel()
+						keydown(forward)
+						keydown(sneak)
+						wait(3t)
+						keyup(forward)
+						wait(1t)
+						keyup(sneak)
+						keydown(backward)
+						wait(3t)
+						keyup(backward)
+						wait(1t)
+						keydown(left)
+						keydown(sneak)
+						wait(3t)
+						keyup(left)
+						wait(1t)
+						keydown(right)
+						wait(3t)
+						keyup(sneak)
+						keyup(right)
+						wait(3t)
+						if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
+							selreplace(minecraft:log,air)
+						elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
+							selreplace(minecraft:log2,air)
+						endif;
+					endif;
+					set(#forag1,0)
+				endif;
                 if(#forag == 50)
-                    if(position)
-                        #xpos1 = XPOS
-                        #zpos1 = ZPOS
-                        set(position,false)
-                    else
-                        #xpos2 = XPOS
-                        #zpos2 = ZPOS
-                        set(position)
-                    endif;
-                    cancel()
-                    if((%#xpos1% == %#xpos2%)&&(%#zpos1% == %#zpos2%))
-                        log("OK AFK !!!")
-                        keydown(forward)
-                        keydown(sneak)
-                        wait(3t)
-                        keyup(forward)
-                        wait(1t)
-                        keyup(sneak)
-                        keydown(backward)
-                        wait(3t)
-                        keyup(backward)
-                        wait(1t)
-                        keydown(left)
-                        keydown(sneak)
-                        wait(3t)
-                        keyup(left)
-                        wait(1t)
-                        keydown(right)
-                        wait(3t)
-                        keyup(sneak)
-                        keyup(right)
-                        wait(3t)
-                    endif;
+					cancel()
                     if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
                         selreplace(minecraft:log,air)
                     elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
@@ -187,6 +200,7 @@ else;
                 endif;
                 
                 inc(#forag,1)
+				inc(#forag1,1)
                 wait(500ms)
                 
                 //detects when inventory is full
