@@ -6,18 +6,20 @@
 //Large = 56 / Greater = 65 / Jumbo = 83
 #backpack = 83
 //Vendre Auto   set(gotosell,false)
-set(gotosell,false)
+set(gotosell,true)
 
 //======================== ATTENTION PAS DE MODIFICATION ==============================//
 
 #forag = 50;
+#forag1 = 0;
 #slotbackpack = #backpack - 30
+#slotbackpackmax = #backpack + 5
 set(lobby,false)
 set(warp,false)
 set(verifnafk)
 set(position)
 #value = 0;
-#craftitems = 0;
+#nbloop = 1;
 
 if(%&foraging% == "Oak")
     #max = 12
@@ -29,10 +31,10 @@ if(%&foraging% == "Oak")
     &posx[6] = -129;  &posy[6] = 71;  &posz[6] = 7
     &posx[7] = -135;  &posy[7] = 73;  &posz[7] = -49
     &posx[8] = -110;  &posy[8] = 76;  &posz[8] = -27
-	&posx[9] = -144;  &posy[9] = 77;  &posz[9] = -65
-	&posx[10] = -148; &posy[10] = 74; &posz[10] = -53
-	&posx[11] = -141; &posy[11] = 74; &posz[11] = -42
-	&posx[12] = -141; &posy[12] = 77; &posz[12] = -42
+    &posx[9] = -144;  &posy[9] = 77;  &posz[9] = -65
+    &posx[10] = -148; &posy[10] = 74; &posz[10] = -53
+    &posx[11] = -141; &posy[11] = 74; &posz[11] = -42
+    &posx[12] = -141; &posy[12] = 77; &posz[12] = -42
     
 elseif(%&foraging% == "Spruce")
     #max = 8
@@ -71,13 +73,13 @@ endif
 
 if(foraginginv);
     set(foraginginv,false); 
-    log("Stop Script Mainf");
+    log("Stop Script &l&eFORAGING");
     cancel()
     selclear()
     stop(all);
     wait(50t);
 else;
-    log("Go Script Mainf"); 
+    log("Go Script &l&eFORAGING"); 
     set(foraginginv);
     log(&bForaging ==> &7 Script is starting!);
     wait(15t)
@@ -94,48 +96,75 @@ else;
         inc(#i,1)
         
     until(%#i% >= %#max%)
-
+	
+	unset(#online_players);
+	unsafe;
+		foreach(players);
+			ifmatches("%PLAYERNAME%","^[A-Za-z0-9_]{3,16}$"); // Can also just use '\w' instead of the char set here
+				inc(#online_players);
+			endif;
+		next;
+	endunsafe;
+	log("&7Players currently online in your lobby: &d%#online_players%");
     do()
     
         #xpos = XPOS
         #ypos = YPOS
         #zpos = ZPOS
-        //log("People:%ONLINEPLAYERS%")
         //log("Wood: %&foraging% Lobby: %lobby% Warp: %warp% VerifPos: %verifnafk%")
-		//log("%#forag% %#forag1%")
-
-        if((%ONLINEPLAYERS% >= 82)&&(%lobby% == False)&&(%&foraging% == "Oak"))
+        //log("%#forag% %#forag1%")
+		
+        if((%#online_players% >= 5)&&(%lobby% == False)&&(%&foraging% == "Oak"))
             wait(30t)
-            log("Oak")
             echo("/hub")
             wait(15t)
             goto(-10,70,-67)
             wait(35t)
-            key(attack);
-            wait(15t);
-            slotclick(50)
-            wait(15t);
-            wait(4000ms)
+			
+			#vpnj = 0
+			set(valid,false)
+			do()
+				getslotitemext(50,&item,#stack,&dam,&name);
+				strip(&pnj,%&item%);
+				if(%&pnj% == "stained_glass_pane")
+					set(lobby)
+					set(valid)
+					slotclick(49)
+				elseif(%&pnj% == "compass")
+					set(valid)
+					slotclick(50)
+					wait(15t);
+					wait(4000ms)
+				else
+					key(attack);
+					wait(10t)
+					if(%#vpnj% < 7)
+						looks(-10,,0.1)
+					elseif((%#vpnj% > 7)&&(%#vpnj% < 14))
+						looks(+10,,0.1)
+					elseif(%#vpnj% > 14)
+						#vpnj = 0
+						looks(north,,0.1);
+					endif;
+				endif;
+				inc(#vpnj,1)
+			until(%valid%)
+			
         elseif((%warp% == False)&&((%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Dark Oak")||(%&foraging% == "Acacia")||(%&foraging% == "Jungle")))
             wait(30t)
-            log("Birch")
             set(warp)
             echo("/warp park")
             wait(6000ms)
             if((%&foraging% == "Spruce")||(%&foraging% == "Dark Oak")||(%&foraging% == "Acacia")||(%&foraging% == "Jungle"))
-                log("Spruce")
                 goto(-328,82,-16)
                 wait(10000ms)
                 if((%&foraging% == "Dark Oak")||(%&foraging% == "Acacia")||(%&foraging% == "Jungle"))
-                    log("Dark Oak")
                     goto(-354,89,-13)
                     wait(5000ms)
                     if((%&foraging% == "Acacia")||(%&foraging% == "Jungle"))
-                        log("Acacia")
                         goto(-372,103,-20)
                         wait(5000ms)
                         if(%&foraging% == "Jungle")
-                            log("Jungle")
                             goto(-407,110,-29)
                             wait(6000ms)
                         endif
@@ -148,49 +177,53 @@ else;
                     set(verifnafk,false)
                 endif
                 set(lobby) 
-				if(#forag1 == 10)
-					if(position)
-						#xpos1 = XPOS
-						#zpos1 = ZPOS
-						set(position,false)
-					else
-						#xpos2 = XPOS
-						#zpos2 = ZPOS
-						set(position)
-					endif;
-					if((%#xpos1% == %#xpos2%)&&(%#zpos1% == %#zpos2%))
-						log("OK AFK !!!")
-						cancel()
-						keydown(forward)
-						keydown(sneak)
-						wait(3t)
-						keyup(forward)
-						wait(1t)
-						keyup(sneak)
-						keydown(backward)
-						wait(3t)
-						keyup(backward)
-						wait(1t)
-						keydown(left)
-						keydown(sneak)
-						wait(3t)
-						keyup(left)
-						wait(1t)
-						keydown(right)
-						wait(3t)
-						keyup(sneak)
-						keyup(right)
-						wait(3t)
-						if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
-							selreplace(minecraft:log,air)
-						elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
-							selreplace(minecraft:log2,air)
-						endif;
-					endif;
-					set(#forag1,0)
-				endif;
+                if(#forag1 == 8)
+                    if(position)
+                        #xpos1 = XPOS
+                        #zpos1 = ZPOS
+                        set(position,false)
+                    else
+                        #xpos2 = XPOS
+                        #zpos2 = ZPOS
+                        set(position)
+                    endif;
+                    if((%#xpos1% == %#xpos2%)&&(%#zpos1% == %#zpos2%))
+                        log("&l&eWarning AFK")
+                        cancel()
+                        random(#t1,1,10)
+                        random(#t2,1,10)
+                        random(#t3,1,10)
+                        random(#t4,1,10)
+                        keydown(forward)
+                        keydown(sneak)
+                        wait(%#t1%t)
+                        keyup(forward)
+                        wait(1t)
+                        keyup(sneak)
+                        keydown(back)
+                        wait(%#t2%t)
+                        keyup(back)
+                        wait(1t)
+                        keydown(left)
+                        keydown(sneak)
+                        wait(%#t3%t)
+                        keyup(left)
+                        wait(1t)
+                        keydown(right)
+                        wait(%#t4%t)
+                        keyup(sneak)
+                        keyup(right)
+                        wait(3t)    
+                        if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
+                            selreplace(minecraft:log,air)
+                        elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
+                            selreplace(minecraft:log2,air)
+                        endif;
+                    endif;
+                    set(#forag1,0)
+                endif;
                 if(#forag == 50)
-					cancel()
+                    cancel()
                     if((%&foraging% == "Oak")||(%&foraging% == "Birch")||(%&foraging% == "Spruce")||(%&foraging% == "Jungle"))
                         selreplace(minecraft:log,air)
                     elseif((%&foraging% == "Acacia")||(%&foraging% == "Dark Oak"))
@@ -200,7 +233,7 @@ else;
                 endif;
                 
                 inc(#forag,1)
-				inc(#forag1,1)
+                inc(#forag1,1)
                 wait(500ms)
                 
                 //detects when inventory is full
@@ -209,41 +242,35 @@ else;
                     log(&bForaging ==> &7 Crafting enchanted Wood);
 
                     for(#var,34,16,9)
-                    echo("/craft");
-                    wait(15t);
-                        getslotitemext(%#var%,&item,#stack,&dam,&name);
-                        strip(&ebois,%&name%);
-                        //log("%&ebois%")
+						echo("/craft");
+						wait(15t);
+						getslotitemext(%#var%,&item,#stack,&dam,&name);
+						strip(&ebois,%&name%);
                         if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
                             for(#invslot,1,14);
                                 slotclick(%#var%);
                                 wait(1t) ;  
                             next;
-                        else
-                            inc(#value,1)
+                        elseif((%#var% == 16)&&(%&item% == "stained_glass_pane"))
+							#slot = 88
+							do()
+								getslotitemext(23,&item,#stack,&dam,&name);
+								strip(&ebois,%&name%);
+								if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
+									slotclick(23, left, true);
+									wait(5t)
+								endif;
+								getslotitemext(%#slot%,&item,#itemcount,&dam1,&name);
+								strip(&bois,%&name%);
+								if((%&bois% == "Oak Wood")||(%&bois% == "Spruce Wood")||(%&bois% == "Birch Wood")||(%&bois% == "Dark Oak Wood")||(%&bois% == "Acacia Wood")||(%&bois% == "Jungle Wood"));
+									if(%#itemcount% == 64);
+										slotclick(%#slot%, left, true);
+									endif;
+								endif;
+								inc(#slot,-1); 
+								wait(5t)
+							until(%#slot% == 53)
                         endif;
-                        if(%#value% == 3)
-                            for(#slot,88,54);
-                                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name);
-                                strip(&ebois,%&name%);
-
-                                if((%&ebois% == "Oak Wood")||(%&ebois% == "Spruce Wood")||(%&ebois% == "Birch Wood")||(%&ebois% == "Dark Oak Wood")||(%&ebois% == "Acacia Wood")||(%&ebois% == "Jungle Wood"));
-                                    if(%#itemcount% == 64);
-                                        slotclick(%#slot%, left, true);
-                                        inc(#craftitems,-1);
-                                        if(%#craftitems% == -5);
-                                            wait(10t);
-                                            slotclick(23, left, true);
-                                            wait(10t);
-                                            #craftitems = 0;
-                                        endif;
-                                        wait(10t)
-                                    endif;
-                                endif;  
-                            next;
-                            #craftitems = 0
-                        endif;
-                        #value = 0;
                     press(escape)
                     wait(10t)
                     next;
@@ -251,8 +278,19 @@ else;
                     slot(2)
                     key(use)
                     wait(10t)
-                    slotclick(%#backpack%,l,true)
-                    wait(20t)
+					
+					#invslot = %#backpack%
+					do()
+						getslotitemext(%#invslot%,&item,#stack,&dam,&name);
+						strip(&ebois,%&name%);
+						if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
+							slotclick(%#invslot%,l,true);
+							wait(10t);
+						endif;
+						inc(#invslot,1);
+					until(%#invslot% == %#slotbackpackmax%)
+
+                    wait(10t)
                     getslotitemext(%#slotbackpack%,&items,#itemcounts,&dams,&names);
                     strip(&ebois,%&names%);
                     press(escape)
@@ -260,45 +298,64 @@ else;
                     if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
                         if(%#itemcounts% == 64);
                             if(gotosell)
-                                slot(2)
-                                key(use)
-                                wait(10t)
-                                //AJOUTER CODE POUR JUMBO BACKPACK DEUX FOIS FAIRE LA VENTES
-                                for(#sloth,%#slotbackpack%,0)
-                                getslotitem(%#sloth%)
-                                    slotclick(%#sloth%, left, true)
-                                    wait(10t)
-                                next;
-                                wait(5t)
-                                press(escape)
-                                wait(5t)
-                                slot(1)
-                                wait(20t)
-                                echo("/hub")
-                                wait(30t)
-                                goto(-34,70,-75)
-                                wait(300t)
-                                looks(north,,0.1);
-                                wait(1t)
-                                key(attack)
-                                wait(10t)
-                                slotclick(78)
-                                wait(10t)
-                                slotclick(16)
-                                wait(10t)
-                                slotclick(12)
-                                wait(10t)
-                                slotclick(13)
-                                wait(10t)
-                                if(%&foraging% == "Oak")
-                                    goto(-110,74,-33)
-                                    wait(180t)
-                                endif;
+								if(%#backpack% == 83)
+									#nbloop = 2
+								endif;
+								#invendu = 0
+								
+								echo("/hub")
+								wait(10t)
+								goto(-40,70,-78)
+								wait(70t)
+								looks(north,,0.1);
+								wait(1t)
+								
+								do()	
+									slot(2)
+									key(use)
+									wait(10t)
+									for(#sloth,%#slotbackpack%,0)
+										getslotitem(%#sloth%)
+										slotclick(%#sloth%, left, true)
+										wait(5t)
+									next;
+									wait(5t)
+									press(escape)
+									wait(5t)
+									
+									slot(1)
+									wait(1t)
+									key(attack)
+									wait(10t)
+									slotclick(78)
+									wait(10t)
+									slotclick(16)
+									wait(10t)
+									slotclick(12)
+									wait(10t)
+									slotclick(13)
+									wait(10t)
+									inc(#invendu,1);
+								until(%#invendu% == %#nbloop%)
+								
+								if(%&foraging% == "Oak")
+									goto(-110,74,-33)
+									wait(180t)
+								endif;
                                 wait(20t)
                             else
                                 echo("/enderchest")
                                 wait(10t)
-                                slotclick(83,l,true)
+                                #invslot = %#backpack%
+								do()
+									getslotitemext(%#invslot%,&item,#stack,&dam,&name);
+									strip(&ebois,%&name%);
+									if((%&ebois% == "Enchanted Oak Wood")||(%&ebois% == "Enchanted Spruce Wood")||(%&ebois% == "Enchanted Birch Wood")||(%&ebois% == "Enchanted Dark Oak Wood")||(%&ebois% == "Enchanted Acacia Wood")||(%&ebois% == "Enchanted Jungle Wood"));
+										slotclick(%#invslot%,l,true);
+										wait(10t);
+									endif;
+									inc(#invslot,1);
+								until(%#invslot% == %#slotbackpackmax%)
                                 wait(5t)
                                 press(escape)
                                 wait(5t)
@@ -316,7 +373,7 @@ else;
                 if((%&foraging% == "Oak")&&(%#ypos% == 70 ))
                     set(lobby,false)
                     set(verifnafk)
-                    log("Warning")
+                    log("&l&e Warning HUB")
                     cancel()
                     #forag = 50
                 elseif((%&foraging% == "Oak")&&(%#ypos% <= 69 )||(%#ypos% >= 79 ))
@@ -336,7 +393,7 @@ else;
                 endif
                 
                 if(%verifnafk% == False)    
-                    log("Warning AFK")
+                    log("&l&eWarning AFK &l&everifnafk False")
                     cancel()
                     echo("/lobby")
                     wait(5000ms)

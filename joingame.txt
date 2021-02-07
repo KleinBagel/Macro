@@ -6,8 +6,8 @@ wait(25t)
 #zpos = ZPOS
 getslotitemext(1,&item,#stack,&dam,&name);
 log("x: %#xpos% y: %#ypos% z: %#zpos% item: %&item% %SERVER%")
-if(%SERVER% == "mc.hypixel.net.")
-    if(((%&item% == "compass")||(%&item% == "air"))&&(((%#xpos% >= -155)&&(%#xpos% <= -145)&&(%#ypos% == 69)&&(%#zpos% >= 145)&&(%#zpos% <= 150))||((%#xpos% == 41)&&(%#ypos% == 87)&&(%#zpos% == 22))))
+if(%SERVER% == "mc.hypixel.net")
+    if(((%&item% == "compass")||(%&item% == "air"))&&(((%#xpos% >= -155)&&(%#xpos% <= -145)&&(%#ypos% == 69)&&(%#zpos% >= 145)&&(%#zpos% <= 150))||((%#xpos% >= -26)&&(%#xpos% <= -23)&&(%#ypos% == 70)&&(%#zpos% >= -5)&&(%#zpos% <= 5))||((%#xpos% == 41))||((%#xpos% == 41)&&(%#ypos% == 87)&&(%#zpos% == 22))))
         log("join Hypixel")
         echo("/play sb")
         wait(2500ms)
@@ -15,9 +15,10 @@ if(%SERVER% == "mc.hypixel.net.")
         wait(2500ms)
         
         //exec(mainfarm.txt)
-        exec(mainfora.txt)
+        //exec(mainfora.txt)
         //exec(mainmin.txt)
-        //exec(mainmine.txt)    
+        //exec(mainmine.txt)
+        exec(mithril.txt)           
         
         wait(10t)
     endif;

@@ -1,0 +1,414 @@
+#tempo = 150
+
+#res = 0
+#nb = 0
+#verifcomcommi = 0
+set(quest,true)
+set(boucle,false)
+set(changepos,true)
+set(verif,false)
+set(aimbot,false)
+unset(copy)
+
+&location = "Dwarven Mines"
+
+if(mith);
+    set(mith,false);
+    log("Stop Script Main");
+    stop(all);
+    wait(50t);
+
+else;
+    log("Go Script Main mith");
+    set(mith); 
+    log(&benchant;  ==> &7 Script is starting!);
+    
+    do()
+        
+        &currentlocation = ""
+        Foreach(teams)
+        STRIP(&joined,%TEAMPREFIX%%TEAMSUFFIX%);
+            Ifmatches(%&joined%,%&location%);
+                &currentlocation = %&location%;
+                break;
+            EndIf
+            Ifmatches(%&joined%,"Village");
+                &currentlocation = "Skyblock Hub";
+                break;
+            EndIf
+            Ifmatches(%&joined%,"Your Island");
+                &currentlocation = "Island";
+                break;
+            EndIf
+            Ifmatches(%&joined%,"Hype:");
+                &currentlocation = "Lobby";
+                break;
+            EndIf
+            Ifmatches(%&joined%,"Mystery Dust:");
+                &currentlocation = "Lobby";
+                break;
+            EndIf
+            Ifmatches(%&joined%,"Coins: ");
+                &currentlocation = "Lobby";
+                break;
+            EndIf
+        Next
+        if(&currentlocation == "Lobby")
+            log(&9Failsafe &7>> &7Location detected as Lobby. Warping to Skyblock...)  
+            echo("/play skyblock")
+            wait(4000ms) 
+        
+        elseif((&currentlocation == "Skyblock Hub")||(&currentlocation == "Island"))
+            log(&9Failsafe &7>> &7Location detected as the Skyblock Hub or as the Island. Warping to Hub...)
+            echo("/is")
+            wait(4000ms)
+            echo("/hub")
+            wait(4000ms)
+            slot(1)
+            set(changepos,true)
+            goto(-11,64,-230)
+            do()
+                #ypos = YPOS
+            until(%#ypos% == 74)
+            wait(70t)
+            goto(-7,68,-395)
+            do()
+                #ypos = YPOS
+            until(%#ypos% == 157)
+            wait(30t)
+            goto(45,150,16)
+            do()
+                #xpos = XPOS
+                #ypos = YPOS
+                #zpos = ZPOS
+            until((%#xpos% == 45)&&(%#ypos% == 150)&&(%#zpos% == 16))
+            wait(20t)
+            set(valid,false)
+            looks(north,,0.1);
+            #vpnj = 0
+            do()
+                getslotitemext(32,&item,#stack,&dam,&name);
+                strip(&pnj,%&name%);
+                if(%&pnj% == "Dwarven Mines")
+                    slotclick(32)
+                    wait(20t)
+                    set(valid)
+                else
+                    key(attack);
+                    wait(2t)
+                    if(%#vpnj% < 14)
+                        looks(-10,,0.1)
+                    elseif((%#vpnj% > 14)&&(%#vpnj% < 21))
+                        looks(+10,,0.1)
+                    elseif(%#vpnj% > 21)
+                        #vpnj = 0
+                        looks(north,,0.1);
+                    endif;
+                endif;
+                inc(#vpnj,1)
+            until(%valid%)
+            wait(25t)
+            goto(73,198,-90)
+            do()
+                #xpos = XPOS
+                #ypos = YPOS
+                #zpos = ZPOS
+            until((%#xpos% == 73)&&(%#ypos% == 198)&&(%#zpos% == -90))
+            
+        elseif(&currentlocation == %&location%)
+        
+            if(quest)
+                // atention il y a un probleme tu ne recomence pas pour verifier un e deuxieme fois apres Done
+                do()
+                    #i = 1
+                    foreach(players);
+                        &commipos = 0;
+                        &commipor = 0;
+                        STRIP(&commission,%PLAYERDISPLAYNAME%);
+                        Ifmatches(%&commission%,"Commissions");
+                            set(copy)
+                        EndIf
+                        Ifmatches(%&commission%,"Forges");
+                            unset(copy)
+                            break;
+                        EndIf
+                        if(copy)
+                            ifmatches(%&commission%," \w"); // \w means a numerical, alphabetical or underscore character;
+                                match(%&commission%,"(\D+):",{&commipos});
+                                match(%&commission%,"(\d+.\d|\d+|DONE)",{&commipor});
+                                &cpos[%#i%] = %&commipos%
+                                &cpor[%#i%] = %&commipor%
+                                log("%#i% %&cpos[%#i%]% %&cpor[%#i%]% %")
+                                ifmatches(%&cpor[%#i%]%,"DONE")
+                                    if(aimbot)
+                                        press(numpad2)
+                                        unset(aimbot)
+                                    endif;
+                                    goto(58,198,-10)
+                                    do()
+                                        #xpos = XPOS
+                                        #ypos = YPOS
+                                        #zpos = ZPOS
+                                    until((%#xpos% == 58)&&(%#ypos% == 198)&&(%#zpos% == -10))
+                                    set(valid1,false)
+                                    looks(south,,0.1);
+                                    wait(5t)
+                
+                                    #vpnj = 0
+                                    do()
+                                        getslotitemext(30,&item,#stack,&dam,&name);
+                                        strip(&pnj,%&name%);
+                                        if(%&pnj% == "Commission Milestones")
+                                            if(%#i% == 1)
+                                                slotclick(11)
+                                            else
+                                                slotclick(15)
+                                            endif;
+                                            wait(5t)
+                                            slotclick(31)
+                                            wait(5t)
+                                            slotclick(31)
+                                            wait(5t)
+                                            set(valid1)
+                                        else
+                                            key(attack);
+                                            wait(2t)
+                                            if(%#vpnj% < 14)
+                                                looks(-10,,0.1)
+                                            elseif((%#vpnj% > 14)&&(%#vpnj% < 21))
+                                                looks(+10,,0.1)
+                                            elseif(%#vpnj% > 21)
+                                                #vpnj = 0
+                                                looks(south,,0.1);
+                                            endif;
+                                        endif;
+                                        inc(#vpnj,1)
+                                    until(%valid1%)
+                                    set(verif,false)
+                                    set(changepos)
+                                elseifmatches(%&cpos[%#i%]%,"(Mithril|Titanium)")
+                                    match(%&cpos[%#i%]%,"(\w+ \w+|Rampart's Quarry)",{&commiposition});
+                                    &location = %&commiposition%
+                                    set(verif)
+                                elseifmatches(%&cpos[%#i%]%,"(Goblin Slayer)")
+                                    &location = "Goblin Burrows"
+                                    set(verif)
+                                elseifmatches(%&cpos[%#i%]%,"(Ice Walker)")
+                                    &location = "Great Ice Wall"
+                                    set(verif)
+                                endif;
+                                inc(#i,1)
+                            endif
+                        endif;
+                    next;
+                until(%verif% == true)
+                log(%&location%)
+            endif;
+            
+            &action = "mining"
+            if(%&location% == "Royal Mines")
+                #text1 = 185;#text2 = 150;#text3 = 59;
+                &pos = "east";
+                #rep = 21;
+                &posx[1] = "-50";&posy[1] = "-15";&posx[2] = "+15";&posy[2] = "";&posx[3] = "+15";&posy[3] = "";&posx[4] = "+20";&posy[4] = "";&posx[5] = "+20";&posy[5] = "";&posx[6] = "+20";&posy[6] = "";&posx[7] = "+10";&posy[7] = "";
+                &posx[8] = "";&posy[8] = "+15";&posx[9] = "-15";&posy[9] = "";&posx[10] = "-15";&posy[10] = "";&posx[11] = "-20";&posy[11] = "";&posx[12] = "-20";&posy[12] = "";&posx[13] = "-20";&posy[13] = "";&posx[14] = "-10";&posy[14] = "";
+                &posx[15] = "";&posy[15] = "+15";&posx[16] = "+15";&posy[16] = "";&posx[17] = "+15";&posy[17] = "";&posx[18] = "+20";&posy[18] = "";&posx[19] = "+20";&posy[19] = "";&posx[20] = "+20";&posy[20] = "";&posx[21] = "+10";&posy[21] = "";
+            elseif(%&location% == "Lava Springs")
+                #text1 = -40;#text2  = 204;#text3 = -19;
+                &pos = "west";
+                #rep = 6;
+                &posx[1] = "";&posy[1] = "-20";&posx[2] = "";&posy[2] = "0";&posx[3] = "-35";&posy[3] = "";&posx[4] = "";&posy[4] = "+30";&posx[5] = "";&posy[5] = "+10";&posy[6] = "-20";&posy[6] = "";
+            elseif(%&location% == "Cliffside Veins")
+                #text1 = 44;#text2  = 135;#text3 = 11;
+                &pos = "north"
+                #rep = 21;
+                &posx[1] = "-25";&posy[1] = "-15";&posx[2] = "+10";&posy[2] = "";&posx[3] = "+20";&posy[3] = "";&posx[4] = "+20";&posy[4] = "";&posx[5] = "+15";&posy[5] = "";&posx[6] = "+10";&posy[6] = "";&posx[7] = "+20";&posy[7] = "";
+                &posx[8] = "";&posy[8] = "+15";&posx[9] = "-10";&posy[9] = "";&posx[10] = "-20";&posy[10] = "";&posx[11] = "-20";&posy[11] = "";&posx[12] = "-15";&posy[12] = "";&posx[13] = "-20";&posy[13] = "";&posx[14] = "-15";&posy[14] = "";
+                &posx[15] = "";&posy[15] = "+20";&posx[16] = "+10";&posy[16] = "";&posx[17] = "+20";&posy[17] = "";&posx[18] = "+20";&posy[18] = "";&posx[19] = "+30";&posy[19] = "";&posx[20] = "+20";&posy[20] = "";&posx[21] = "+20";&posy[21] = "";
+            elseif(%&location% == "Upper Mines")
+                #text1 = -129;#text2  = 174;#text3 = -74;
+                &pos = "north";
+                #rep = 19;
+                &posx[1] = "-45";&posy[1] = "-15";&posx[2] = "+15";&posy[2] = "";&posx[3] = "+20";&posy[3] = "";&posx[4] = "+20";&posy[4] = "";&posx[5] = "+20";&posy[5] = "";&posx[6] = "+20";&posy[6] = "";&posx[7] = "+10";&posy[7] = "";
+                &posx[8] = "";&posy[8] = "+15";&posx[9] = "-15";&posy[9] = "";&posx[10] = "-15";&posy[10] = "";&posx[11] = "-20";&posy[11] = "";&posx[12] = "-20";&posy[12] = "";&posx[13] = "-20";&posy[13] = "";&posx[14] = "-10";&posy[14] = "";
+                &posx[15] = "";&posy[15] = "+20";&posx[16] = "+15";&posy[16] = "";&posx[17] = "+15";&posy[17] = "";&posx[18] = "+20";&posy[18] = "";&posx[19] = "+20";&posy[19] = "";
+            
+            elseif(%&location% == "Rampart's Quarry")
+                #text1 = -87;#text2  = 147;#text3 = -14;
+                &pos = "north";
+                #rep = 21;
+                &posx[1] = "-75";&posy[1] = "-17";&posx[2] = "+25";&posy[2] = "";&posx[3] = "+25";&posy[3] = "";&posx[4] = "+25";&posy[4] = "";&posx[5] = "+25";&posy[5] = "";&posx[6] = "+15";&posy[6] = "";&posx[7] = "+15";&posy[7] = "";
+                &posx[8] = "";&posy[8] = "+17";&posx[9] = "-10";&posy[9] = "";&posx[10] = "-15";&posy[10] = "";&posx[11] = "-20";&posy[11] = "";&posx[12] = "-35";&posy[12] = "";&posx[13] = "-30";&posy[13] = "";&posx[14] = "-10";&posy[14] = "";
+                &posx[15] = "";&posy[15] = "+30";&posx[16] = "+25";&posy[16] = "";&posx[17] = "+25";&posy[17] = "";&posx[18] = "+25";&posy[18] = "";&posx[19] = "+25";&posy[19] = "";&posx[20] = "+15";&posy[20] = "";&posx[21] = "+15";&posy[21] = "";
+            elseif(%&location% == "Goblin Burrows")
+                #text1 = -145;#text2  = 144;#text3 = 135;
+                &action = "combat"
+                set(changepos)
+            elseif(%&location% == "Great Ice Wall")
+                #text1 = 0;#text2  = 128;#text3 = 160;
+                &action = "combat"
+                set(changepos)
+            else
+                &location = "Dwarven Mines"
+                #text1 = 70;#text2  = 196;#text3 = -43;
+                &pos = "south";
+                #rep = 16;
+                &posx[1] = "-25";&posy[1] = "-20";&posx[2] = "+20";&posy[2] = "";&posx[3] = "+25";&posy[3] = "";&posx[4] = "+25";&posy[4] = "";&posx[5] = "";&posy[5] = "+20";&posx[6] = "-25";&posy[6] = "";   &posx[7] = "-25";&posy[7] = "";&posx[8] = "-25";&posy[8] = "";&posx[9] = "-20";&posy[9] = "";&posx[10] = "";&posy[10] = "+20";&posx[11] = "+10";&posy[11] = "";&posx[12] = "+15";&posy[12] = "";&posx[13] = "+15";&posy[13] = "";&posx[14] = "+25";&posy[14] = "";&posx[15] = "+15";&posy[15] = "";&posx[16] = "+15";&posy[16] = "";
+            endif;
+    
+            if(changepos)
+                log(%#text1% %#text2% %#text3%)
+                goto(%#text1%,%#text2%,%#text3%)
+                do()
+                    #xpos = XPOS
+                    #ypos = YPOS
+                    #zpos = ZPOS
+                until((%#xpos% == %#text1%)&&(%#ypos% == %#text2%)&&(%#zpos% == %#text3%))
+                set(changepos,false)
+                wait(15t)
+            endif;
+            
+            if(%&action% == "mining")
+                looks(%&pos%,,0.1);
+                wait(5t)
+                if(%&location% == "Dwarven Mines")
+                    keydown(back)
+                    wait(4t)
+                    keyup(back)
+                    wait(10t)
+                endif;
+                slot(3)
+                wait(10ms)
+                key(use)
+                looks(%&pos%,,0.1);
+                wait(10ms)
+                getslotitemext(49,&item,#stack,&dam,&name);
+                strip(&eminerai,%&name%);
+                if(%&eminerai% == "Close")
+                    slotclick(49)
+                    wait(50t)
+                endif
+                #nbboucle = 0
+                for(#i,1,%#rep%)
+                    looks(%&posx[%#i%]%,%&posy[%#i%]%,0.1);
+                    do();key(attack);
+                    inc(#nb,1)
+                    if(%#nb% == %#tempo%)
+                        set(boucle)
+                    endif;
+                    until(((%HITNAME% != "Light Blue Wool")&&(%HITNAME% != "Gray Wool")&&(%HITNAME% != "Polished Diorite")&&(%HITNAME% != "Prismarine")&&(%HITNAME% != "Prismarine Bricks")&&(%HITNAME% != "Dark Prismarine"))||(boucle));
+                    #nb = 0;
+                    set(boucle,false)
+                
+                    ifinvisfull();
+                        #titanium = 0
+                        
+                        wait(10t)
+                        for(#var,34,16,9)
+                            echo("/craft");
+                            wait(15t);
+                            getslotitemext(%#var%,&item,#stack,&dam,&name);
+                            strip(&eminerai,%&name%);
+                            if(%&eminerai% == "Enchanted Mithril")
+                                for(#invslot,1,14);
+                                    slotclick(%#var%);
+                                    wait(1t);  
+                                next;
+                            elseif((%#var% == 16)&&(%&item% == "stained_glass_pane"))
+                                #slot = 88
+                                do()
+                                    getslotitemext(23,&item,#stack,&dam,&name);
+                                    strip(&eminerai,%&name%);
+                                    if(%&eminerai% == "Enchanted Mithril");
+                                        slotclick(23, left, true);
+                                        wait(5t)
+                                    endif;
+                                    
+                                    getslotitemext(%#slot%,&item,#itemcount,&dam1,&name);
+                                    strip(&minerai,%&name%);
+                                    if(%&minerai% == "Titanium")
+                                        if(%#itemcount% == 64);
+                                            inc(#titanium,1);
+                                        endif;
+                                    endif;
+                                    if(%&minerai% == "Mithril");
+                                        if(%#itemcount% == 64);
+                                            slotclick(%#slot%, left, true);
+                                        endif;
+                                    endif;
+                                    inc(#slot,-1); 
+                                    wait(5t)
+                                until(%#slot% == 50)
+                            endif;
+                        press(escape)
+                        wait(10t)
+                        next;
+                        
+                        if(%#titanium% >= 5)
+                            echo("/craft");
+                            wait(10t);
+                            #slot = 88
+                            do()
+                                getslotitemext(23,&item,#stack,&dam,&name);
+                                strip(&eminerai,%&name%);
+                                if(%&eminerai% == "Enchanted Titanium");
+                                    slotclick(23, left, true);
+                                    wait(5t)
+                                endif;
+                                
+                                getslotitemext(%#slot%,&item,#itemcount,&dam1,&name);
+                                strip(&minerai,%&name%);
+                                if(%&minerai% == "Titanium")
+                                    if(%#itemcount% == 64);
+                                        slotclick(%#slot%, left, true);
+                                    endif;
+                                endif;
+                                inc(#slot,-1); 
+                                wait(5t)
+                            until(%#slot% == 53)
+                            press(escape)
+                            wait(10t)
+                        endif;
+                        
+                        slot(2)
+                        key(use)
+                        wait(10t)
+                        
+                        #invslot = 44
+                        do()
+                            getslotitemext(%#invslot%,&item,#itemcount,&dam,&nameb);
+                            strip(&eminerai,%&nameb%);
+                            if((%&eminerai% == "Enchanted Mithril")||(%&eminerai% == "Enchanted Titanium"))
+                                slotclick(%#invslot%,l,true);
+                                wait(10t);
+                            endif;
+                            inc(#invslot,1);
+                        until(%#invslot% == 88)
+                        
+                        press(escape)
+                        wait(5t)
+                        slot(3)
+                    endif;
+                next;
+            elseif(%&action% == "combat")
+                do()
+                    slot(1)
+                    if(!aimbot)
+                        press(numpad2)
+                        set(aimbot)
+                    endif;
+                    log(%HITNAME%)
+                    if((%HITNAME% == "Goblin ")||(%HITNAME% == "Ice Walker"))
+						log(Ok)
+                        key(attack);
+                    endif;
+                    inc(#verifcomcommi,1)
+                until(%#verifcomcommi% == 1000)
+                #verifcomcommi = 0
+            endif;
+        else
+            log(&9Failsafe &7>> &7Location Error ... not Exist)
+            echo("/is")
+        endif;
+    loop;
+endif;
